@@ -337,8 +337,8 @@ const createStatisticsTemplate = () => {
 };
 
 
-const renderTemplate = (container, templates, place) => {
-  container.insertAdjacentHTML(place, templates);
+const renderTemplate = (container, template, place) => {
+  container.insertAdjacentHTML(place, template);
 };
 
 renderTemplate(tripMainContainer, createTripInfo(), `afterbegin`);
