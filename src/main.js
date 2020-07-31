@@ -1,11 +1,11 @@
 'use strict';
 
-const self = document.querySelector(`.js-page-body`);
-const headerContainer = self.querySelector(`.js-page-header`);
-const tripMainContainer = headerContainer.querySelector(`.js-trip-main-header`);
-const tripControlsContainer = tripMainContainer.querySelector(`.js-trip-controls`);
-const pageMainContainer = self.querySelector(`.js-page-main`);
-const tripEventsContainer = pageMainContainer.querySelector(`.js-trip-events`);
+const bodyContainer = document.querySelector(`.page-body`);
+const headerContainer = bodyContainer.querySelector(`.page-header`);
+const tripMainContainer = headerContainer.querySelector(`.trip-main`);
+const tripControlsContainer = tripMainContainer.querySelector(`.trip-controls`);
+const pageMainContainer = bodyContainer.querySelector(`.page-main`);
+const tripEventsContainer = pageMainContainer.querySelector(`.trip-events`);
 
 const createTripInfo = () => {
   return `<section class="trip-main__trip-info  trip-info">
@@ -80,7 +80,7 @@ const createSortEventsTemplate = () => {
             </form>`;
 };
 
-const createEventEditHolderTemplate = () => `<form class="trip-events__item js-event-edit  event  event--edit" action="#" method="post"></form>`;
+const createEventEditHolderTemplate = () => `<form class="trip-events__item event  event--edit" action="#" method="post"></form>`;
 
 const createEventHeaderFieldsTemplate = () => {
   return `<header class="event__header">
@@ -190,10 +190,10 @@ const createEventHeaderFieldsTemplate = () => {
   </header>`;
 };
 
-const createEventsDetailContainer = () => `<section class="event__details js-event-details"></section>`;
+const createEventsDetailContainer = () => `<section class="event__details"></section>`;
 
 const createOffersListDetailTemplates = () => {
-  return `<section class="event__section  js-event-offers event__section--offers">
+  return `<section class="event__section event__section--offers">
     <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
     <div class="event__available-offers">
@@ -264,22 +264,22 @@ const createDetailDestinationTemplates = () => {
 };
 
 const createEventsDaysHolder = () => {
-  return `<ul class="trip-days js-days-list">
+  return `<ul class="trip-days">
 
             </ul>`;
 };
 
 const createTripDayHolder = () => {
-  return `<li class="trip-days__item js-day  day">
+  return `<li class="trip-days__item day">
     <div class="day__info">
       <span class="day__counter">1</span>
       <time class="day__date" datetime="2019-03-18">MAR 18</time>
     </div>
-    <ul class="trip-events__list js-trip-events-list"></ul>
+    <ul class="trip-events__list"></ul>
     </li>`;
 };
 
-const createTripEventItemTempaltes = () => {
+const createTripEventItemTempalte = () => {
   return `<li class="trip-events__item">
     <div class="event">
       <div class="event__type">
@@ -337,43 +337,41 @@ const createStatisticsTemplate = () => {
 };
 
 
-const renderTemplates = (container, templates, place) => {
+const renderTemplate = (container, templates, place) => {
   container.insertAdjacentHTML(place, templates);
 };
 
-renderTemplates(tripMainContainer, createTripInfo(), `afterbegin`);
-renderTemplates(tripControlsContainer, createTripControlsMenu(), `afterbegin`);
-renderTemplates(tripControlsContainer, createTripFiltres(), `beforeend`);
+renderTemplate(tripMainContainer, createTripInfo(), `afterbegin`);
+renderTemplate(tripControlsContainer, createTripControlsMenu(), `afterbegin`);
+renderTemplate(tripControlsContainer, createTripFiltres(), `beforeend`);
 
-renderTemplates(tripEventsContainer, createSortEventsTemplate(), `afterbegin`);
-renderTemplates(tripEventsContainer, createEventEditHolderTemplate(), `beforeend`);
+renderTemplate(tripEventsContainer, createSortEventsTemplate(), `afterbegin`);
+renderTemplate(tripEventsContainer, createEventEditHolderTemplate(), `beforeend`);
 
-const eventsEditHolder = tripEventsContainer.querySelector(`.js-event-edit`);
+const eventsEditHolder = tripEventsContainer.querySelector(`.event`);
 
-renderTemplates(eventsEditHolder, createEventHeaderFieldsTemplate(), `afterbegin`);
-renderTemplates(eventsEditHolder, createEventsDetailContainer(), `beforeend`);
+renderTemplate(eventsEditHolder, createEventHeaderFieldsTemplate(), `afterbegin`);
+renderTemplate(eventsEditHolder, createEventsDetailContainer(), `beforeend`);
 
-const eventsEditDetail = eventsEditHolder.querySelector(`.js-event-details`);
+const eventsEditDetail = eventsEditHolder.querySelector(`.event__details`);
 
-renderTemplates(eventsEditDetail, createOffersListDetailTemplates(), `beforeend`);
-renderTemplates(eventsEditDetail, createDetailDestinationTemplates(), `beforeend`);
+renderTemplate(eventsEditDetail, createOffersListDetailTemplates(), `beforeend`);
+renderTemplate(eventsEditDetail, createDetailDestinationTemplates(), `beforeend`);
 
-renderTemplates(tripEventsContainer, createEventsDaysHolder(), `beforeend`);
+renderTemplate(tripEventsContainer, createEventsDaysHolder(), `beforeend`);
 
-const daysHolder = tripEventsContainer.querySelector(`.js-days-list`);
+const daysHolder = tripEventsContainer.querySelector(`.trip-days`);
 
-renderTemplates(daysHolder, createTripDayHolder(), `beforeend`);
+renderTemplate(daysHolder, createTripDayHolder(), `beforeend`);
 
-const dayHolder = daysHolder.querySelector(`.js-day`);
-const tripEventsList = dayHolder.querySelector(`.js-trip-events-list`);
+const dayHolder = daysHolder.querySelector(`.trip-days__item`);
+const tripEventsList = dayHolder.querySelector(`.trip-events__list`);
 
-renderTemplates(tripEventsList, createTripEventItemTempaltes(), `beforeend`);
-renderTemplates(tripEventsList, createTripEventItemTempaltes(), `beforeend`);
-renderTemplates(tripEventsList, createTripEventItemTempaltes(), `beforeend`);
-
-
-renderTemplates(tripEventsContainer, createLoaderTemplate(), `beforeend`);
-renderTemplates(tripEventsContainer, createNoPointTemplate(), `beforeend`);
-renderTemplates(tripEventsContainer, createStatisticsTemplate(), `beforeend`);
+renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
+renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
+renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
 
 
+renderTemplate(tripEventsContainer, createLoaderTemplate(), `beforeend`);
+renderTemplate(tripEventsContainer, createNoPointTemplate(), `beforeend`);
+renderTemplate(tripEventsContainer, createStatisticsTemplate(), `beforeend`);
