@@ -13,6 +13,9 @@ import {createTripEventItemTempalte} from "./view/event-item";
 import {createLoaderTemplate} from "./view/loader";
 import {createNoPointTemplate} from "./view/plug";
 import {createStatisticsTemplate} from "./view/statistics";
+import {createWayPoint} from "./mock/waypoint";
+
+console.log(createWayPoint());
 
 
 const bodyContainer = document.querySelector(`.page-body`);
