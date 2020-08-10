@@ -2,6 +2,7 @@ import {generateOffers} from "./offersType.js";
 
 const MAX_MESSAGE_DESC = 5;
 const MIN_MESSAGE_DESC = 1;
+const MAX_MINUTES = 4320;
 
 // Возвращает рандомное число
 const getRandomInteger = (a = 0, b = 1) => {
@@ -29,11 +30,13 @@ const generateDesc = () => {
         `In rutrum ac purus sit amet tempus.`
     ];
     let message = ``;
-    for (let i = 1; i < maxMessage; i++) {
-        const count = getRandomInteger(0, larumText.length - 1);
 
-        message.concat(larumText.splice(count, spliceMessage));
-    }
+    for (let i = 1; i <= maxMessage; i++) {
+        const count = getRandomInteger(0, larumText.length - 1);
+        const [value] = larumText.splice(count, spliceMessage);
+
+        message = message.concat(value);
+    };
 
     return message;
 };
@@ -71,18 +74,36 @@ const generateCity = () => {
     return cities[randomIndex];
 };
 
-//Создает точку маршрута в виде объекта
-export const createWayPoint = () => { 
+//Возвращает время прибытия и отбытия в точку маршрута
+const generateTime = () => {
 
-    const type = generateTypePoint(); 
+    return {
+        start: {
+            minutes: getRandomInteger(0, 59),
+            hours: getRandomInteger(0, 23),
+        },
+        finish: {
+            minutes: getRandomInteger(0, 59),
+            hours: getRandomInteger(0, 23),
+        }
+    };
+};
+
+//Создает точку маршрута в виде объекта
+export const createWayPoint = () => {
+
+    const type = generateTypePoint();
+    const time = generateTime();
 
     return {
         type,
         city: generateCity(),
+        time,
         offers: generateOffers(type),
         infoPoint: {
             description: generateDesc(),
             photo: `http://picsum.photos/248/152?r=${Math.random()}`,
         },
+        price,
     }
 };
