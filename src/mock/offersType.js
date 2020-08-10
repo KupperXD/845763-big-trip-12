@@ -1,51 +1,51 @@
 const MAX_OFFERS = 5;
 
 const getRandomInteger = (a = 0, b = 1) => {
-    const lower = Math.ceil(Math.min(a, b));
-    const upper = Math.floor(Math.max(a, b));
+  const lower = Math.ceil(Math.min(a, b));
+  const upper = Math.floor(Math.max(a, b));
 
-    return Math.floor(lower + Math.random() * (upper - lower + 1));
+  return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
 
 const generateNameOffers = () => {
-    const offersName = [
-        `food`,
-        `massage`,
-        `escort`,
-        `baggage`,
-        `dance`
-    ];
+  const offersName = [
+    `food`,
+    `massage`,
+    `escort`,
+    `baggage`,
+    `dance`
+  ];
 
-    const randomIndex = getRandomInteger(0, offersName.length - 1);
+  const randomIndex = getRandomInteger(0, offersName.length - 1);
 
-    return offersName[randomIndex];
+  return offersName[randomIndex];
 };
 
 const generatePrice = () => {
-    const prices =  [
-        500,
-        1000,
-        1500,
-        2500
-    ]
+  const prices = [
+    500,
+    1000,
+    1500,
+    2500
+  ];
 
-    const randomIndex = getRandomInteger(0, prices.length - 1);
+  const randomIndex = getRandomInteger(0, prices.length - 1);
 
-    return prices[randomIndex];
+  return prices[randomIndex];
 };
 
 export const generateOffers = (type) => {
-    const offersList = [];
+  const offersList = [];
 
-    for (let i = 0; i < getRandomInteger(0, MAX_OFFERS); i++) {
+  for (let i = 0; i < getRandomInteger(0, MAX_OFFERS); i++) {
 
-        offersList.push({
-            type,
-            name: generateNameOffers(),
-            price: generatePrice()
-        });
-    }
+    offersList.push({
+      type,
+      name: generateNameOffers(),
+      price: generatePrice()
+    });
+  }
 
-    return offersList;
+  return (offersList.length) ? offersList : null;
 };

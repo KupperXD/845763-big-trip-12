@@ -15,8 +15,9 @@ import {createNoPointTemplate} from "./view/plug";
 import {createStatisticsTemplate} from "./view/statistics";
 import {createWayPoint} from "./mock/waypoint";
 
-console.log(createWayPoint());
+const WAY_POINT_COUNT = 10;
 
+const wayPoints = new Array(WAY_POINT_COUNT).fill().map(createWayPoint);
 
 const bodyContainer = document.querySelector(`.page-body`);
 const headerContainer = bodyContainer.querySelector(`.page-header`);
