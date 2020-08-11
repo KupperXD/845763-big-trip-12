@@ -12,11 +12,13 @@ const getRandomInteger = (a = 0, b = 1) => {
   return Math.floor(lower + Math.random() * (upper - lower + 1));
 };
 
+// Генерирует дату начало и конца события
 const generateDate = () => {
   const month = getRandomInteger(0, 11);
   const days = getRandomInteger(0, 31);
   const hours = getRandomInteger(0, 23);
   const minutes = getRandomInteger(0, 59);
+  // конец не должен быть раньше начала
   const finishHours = getRandomInteger(hours, 23);
   const finishMinutes = getRandomInteger(minutes + 1, 59);
   const start = new Date(YEAR, month, days, hours, minutes);
@@ -91,6 +93,7 @@ const generateCity = () => {
   return cities[randomIndex];
 };
 
+// возвращает цену
 const generetaPrice = () => {
   const minPrice = 10;
   const maxPrice = 200;
@@ -107,6 +110,7 @@ export const createWayPoint = () => {
   const price = generetaPrice();
   let offersPrice = 0;
 
+  // если доп опции не пустые считаем цену
   if (offers !== null) {
     offersPrice = offers.reduce((accumulator, element) => accumulator + element.price, 0);
   }

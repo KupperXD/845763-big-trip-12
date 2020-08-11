@@ -14,7 +14,7 @@ import {createLoaderTemplate} from "./view/loader";
 import {createNoPointTemplate} from "./view/plug";
 import {createStatisticsTemplate} from "./view/statistics";
 import {createWayPoint} from "./mock/waypoint";
-import {getRouteList} from "./mock/routeList";
+import {getRouteMap} from "./mock/routeList";
 
 const WAY_POINT_COUNT = 10;
 
@@ -26,9 +26,6 @@ const tripMainContainer = headerContainer.querySelector(`.trip-main`);
 const tripControlsContainer = tripMainContainer.querySelector(`.trip-controls`);
 const pageMainContainer = bodyContainer.querySelector(`.page-main`);
 const tripEventsContainer = pageMainContainer.querySelector(`.trip-events`);
-
-
-console.log(getRouteList(wayPoints));
 
 
 const renderTemplate = (container, template, place) => {

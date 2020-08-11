@@ -1,48 +1,40 @@
 
+// Функция возвращает мапу по событиям в дате
+export const getRouteMap = (wayPoints) => {
+    
+  let routeList = new Map();
+  // Сортируем исходный массив событий по дате
+  let dateList = wayPoints.sort((a,b) => {
+    return a.date.start.getTime() - b.date.start.getTime();
+  });
 
-export const getRouteList = (wayPoints) => {
+  // заполняем мапу
+  dateList.forEach((el) => {
+    const date = el.date.start;
+    const month = date.getMonth() + 1;
+    const days = date.getDate();
+    const currentKeys = `${days}-${month}`;
+    const currentValue = [el];
+    let isUnique = true;
 
-    let dateList = wayPoints.sort((a,b) => {
-        return a.date.start.getTime() - b.date.start.getTime();
-    });
-    let routeList = new Map();
-
-
-    dateList.forEach((el, index, array) => {
-        const date = el.date.start;
-        const month = date.getMonth() + 1;
-        const days = date.getDate();
-        const currentKeys = `${days}-${month}`;
-        const currentValue = [el];
-        let isFlag = false;
-
-        // надо написать цикл и идти не по исходным данным,
-        // а по мапе, если такой ключ уже присутствует то брать значения этого ключа и добавлять туда текущий элемент.
-        // if (index > 0 && index !== array.length - 1) {
-        //     for (let i = index + 1; i < array.length - 1; i++) {
-        //         if (keys === `${array[i].date.start.getDate()}-${array[i].date.start.getMonth() + 1}`) {
-        //             values.push(array[i]);
-        //         } else {
-        //             break;
-        //         }
-        //     }
-        // }
-        // routeList.set(keys, values);
-        if (routeList.size > 0) {
-            for (const [keys, value] of routeList) {
-                if (currentKeys === keys) {
-                    value.push(el);
-                    routeList.set(keys, value);
-                    isFlag = true;
-                    break;
-                }
-            }
-        } else if (!isFlag) {
-            routeList.set(currentKeys, currentValue);
+    if (routeList.size > 0) {
+      // проходим по по мапе
+      for (const [keys, value] of routeList) {
+        // смотрим уникальная ли дата
+        if (currentKeys === keys) {
+          // если дата в мапе есть добавляем текущий элемент к этой дате
+          value.push(el);
+          routeList.set(keys, value);
+          isUnique = false;
+          break;
         }
-    });
+      }
+    }  
+    // Если значение уникальное добавляем новую дату в мапу
+    if (isUnique) {
+      routeList.set(currentKeys, currentValue);
+    }
+  });
 
-    console.log(routeList);
-
-    return dateList;
+  return routeList;
 };
