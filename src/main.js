@@ -14,7 +14,6 @@ import {createLoaderTemplate} from "./view/loader";
 import {createNoPointTemplate} from "./view/plug";
 import {createStatisticsTemplate} from "./view/statistics";
 import {createWayPoint} from "./mock/waypoint";
-import {getRouteMap} from "./mock/routeList";
 
 const WAY_POINT_COUNT = 10;
 

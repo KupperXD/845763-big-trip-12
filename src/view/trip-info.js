@@ -1,7 +1,5 @@
 
-
-
-export const createTripInfo = (wayPoints) => {
+export const createTripInfo = () => {
   return `<section class="trip-main__trip-info  trip-info">
                   <div class="trip-info__main">
                       <h1 class="trip-info__title">Amsterdam &mdash; Chamonix &mdash; Geneva</h1>

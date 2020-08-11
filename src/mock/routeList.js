@@ -1,10 +1,9 @@
 
 // Функция возвращает мапу по событиям в дате
 export const getRouteMap = (wayPoints) => {
-    
   let routeList = new Map();
   // Сортируем исходный массив событий по дате
-  let dateList = wayPoints.sort((a,b) => {
+  let dateList = wayPoints.sort((a, b) => {
     return a.date.start.getTime() - b.date.start.getTime();
   });
 
@@ -29,7 +28,7 @@ export const getRouteMap = (wayPoints) => {
           break;
         }
       }
-    }  
+    }
     // Если значение уникальное добавляем новую дату в мапу
     if (isUnique) {
       routeList.set(currentKeys, currentValue);
