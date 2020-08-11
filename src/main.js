@@ -57,9 +57,13 @@ renderTemplate(daysHolder, createTripDayHolder(), `beforeend`);
 const dayHolder = daysHolder.querySelector(`.trip-days__item`);
 const tripEventsList = dayHolder.querySelector(`.trip-events__list`);
 
-renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
-renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
-renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
+// renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
+// renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
+// renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
+
+wayPoints.forEach((el) => {
+  renderTemplate(tripEventsList, createTripEventItemTempalte(el), `beforeend`);
+});
 
 
 renderTemplate(tripEventsContainer, createLoaderTemplate(), `beforeend`);

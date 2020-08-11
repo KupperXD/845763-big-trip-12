@@ -108,7 +108,7 @@ export const createWayPoint = () => {
   let offersPrice = 0;
 
   if (offers !== null) {
-    offersPrice = offers.reduce((accumulator, element) => accumulator + element.price, 0)
+    offersPrice = offers.reduce((accumulator, element) => accumulator + element.price, 0);
   }
 
   let amountPrice = price + offersPrice;
