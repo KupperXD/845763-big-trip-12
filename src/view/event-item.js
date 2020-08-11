@@ -25,7 +25,7 @@ const generateOffersTemplate = (offers) => {
 
 export const createTripEventItemTempalte = (wayPoint) => {
 
-  const {type, price, date, offers} = wayPoint;
+  const {type, price, date, offers, city} = wayPoint;
 
   const timeStart = (date.start.getHours() * 60) + date.start.getMinutes();
   const timeFinish = (date.finish.getHours() * 60) + date.finish.getMinutes();
@@ -39,7 +39,7 @@ export const createTripEventItemTempalte = (wayPoint) => {
         <div class="event__type">
           <img class="event__type-icon" width="42" height="42" src="img/icons/taxi.png" alt="Event type icon">
         </div>
-        <h3 class="event__title">${type} ${isLocation(type) ? `in` : `to`} Amsterdam</h3>
+        <h3 class="event__title">${type} ${isLocation(type) ? `in` : `to`} ${city}</h3>
 
         <div class="event__schedule">
           <p class="event__time">
