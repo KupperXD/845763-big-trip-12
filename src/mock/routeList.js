@@ -37,7 +37,9 @@ export const getRouteList = (wayPoints) => {
                     break;
                 }
             }
-        } else if (!isFlag) {
+        }
+
+        if (!isFlag) {
             routeList.set(currentKeys, currentValue);
         }
     });
