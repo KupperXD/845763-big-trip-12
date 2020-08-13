@@ -1,22 +1,14 @@
 import {generateOffers} from "./offersType.js";
+import {getRandomInteger} from "../utils";
+import {MAX_MESSAGE_DESC, MIN_MESSAGE_DESC, YEAR, CITIES} from "../constans";
 
-const MAX_MESSAGE_DESC = 5;
-const MIN_MESSAGE_DESC = 1;
-const YEAR = 2020;
-
-// Возвращает рандомное число
-const getRandomInteger = (a = 0, b = 1) => {
-  const lower = Math.ceil(Math.min(a, b));
-  const upper = Math.floor(Math.max(a, b));
-
-  return Math.floor(lower + Math.random() * (upper - lower + 1));
-};
-
-const generateDate = () => {
+// Генерирует дату начало и конца события
+const generateInterval = () => {
   const month = getRandomInteger(0, 11);
   const days = getRandomInteger(0, 31);
   const hours = getRandomInteger(0, 23);
   const minutes = getRandomInteger(0, 59);
+  // конец не должен быть раньше начала
   const finishHours = getRandomInteger(hours, 23);
   const finishMinutes = getRandomInteger(minutes + 1, 59);
   const start = new Date(YEAR, month, days, hours, minutes);
@@ -79,19 +71,14 @@ const generateTypePoint = () => {
 
 // возвращает рандомный город
 const generateCity = () => {
-  const cities = [
-    `Moscow`,
-    `New-York`,
-    `Kiev`,
-    `Minsk`
-  ];
 
-  const randomIndex = getRandomInteger(0, cities.length - 1);
+  const randomIndex = getRandomInteger(0, CITIES.length - 1);
 
-  return cities[randomIndex];
+  return CITIES[randomIndex];
 };
 
-const generetaPrice = () => {
+// возвращает цену
+const generetePrice = () => {
   const minPrice = 10;
   const maxPrice = 200;
 
@@ -102,11 +89,12 @@ const generetaPrice = () => {
 export const createWayPoint = () => {
 
   const type = generateTypePoint();
-  const date = generateDate();
+  const date = generateInterval();
   const offers = generateOffers(type);
-  const price = generetaPrice();
+  const price = generetePrice();
   let offersPrice = 0;
 
+  // если доп опции не пустые считаем цену
   if (offers !== null) {
     offersPrice = offers.reduce((accumulator, element) => accumulator + element.price, 0);
   }
@@ -124,5 +112,5 @@ export const createWayPoint = () => {
     },
     price,
     amountPrice
-  }
+  };
 };

@@ -14,9 +14,7 @@ import {createLoaderTemplate} from "./view/loader";
 import {createNoPointTemplate} from "./view/plug";
 import {createStatisticsTemplate} from "./view/statistics";
 import {createWayPoint} from "./mock/waypoint";
-import {getRouteList} from "./mock/routeList";
-
-const WAY_POINT_COUNT = 10;
+import {WAY_POINT_COUNT} from "./constans";
 
 const wayPoints = new Array(WAY_POINT_COUNT).fill().map(createWayPoint);
 
@@ -26,9 +24,6 @@ const tripMainContainer = headerContainer.querySelector(`.trip-main`);
 const tripControlsContainer = tripMainContainer.querySelector(`.trip-controls`);
 const pageMainContainer = bodyContainer.querySelector(`.page-main`);
 const tripEventsContainer = pageMainContainer.querySelector(`.trip-events`);
-
-
-console.log(getRouteList(wayPoints));
 
 
 const renderTemplate = (container, template, place) => {
@@ -60,10 +55,6 @@ renderTemplate(daysHolder, createTripDayHolder(), `beforeend`);
 
 const dayHolder = daysHolder.querySelector(`.trip-days__item`);
 const tripEventsList = dayHolder.querySelector(`.trip-events__list`);
-
-// renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
-// renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
-// renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
 
 wayPoints.forEach((el) => {
   renderTemplate(tripEventsList, createTripEventItemTempalte(el), `beforeend`);

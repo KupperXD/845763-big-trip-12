@@ -1,11 +1,10 @@
+import {getHours, getMinutes} from "../utils";
+
 const isLocation = (type) => {
-  const locationList = [`Check-in`, `Sightseeng`, `Restaurant`];
+  const locations = [`Check-in`, `Sightseeng`, `Restaurant`];
 
-  return (locationList.indexOf(type) !== -1) ? true : false;
+  return (locations.indexOf(type) !== -1) ? true : false;
 };
-
-const getHours = (value) => Math.floor(value / 60).toString().padStart(2, `0`);
-const getMinutes = (value) => Math.floor(value % 60).toString().padStart(2, `0`);
 
 const generateOffersTemplate = (offers) => {
 
@@ -29,7 +28,7 @@ export const createTripEventItemTempalte = (wayPoint) => {
 
   const timeStart = (date.start.getHours() * 60) + date.start.getMinutes();
   const timeFinish = (date.finish.getHours() * 60) + date.finish.getMinutes();
-  let durationTime = timeFinish - timeStart;
+  const durationTime = timeFinish - timeStart;
   const durationHours = Math.floor(durationTime / 60);
   const durationMinutes = durationTime % 60;
   const offersTemplate = generateOffersTemplate(offers);
