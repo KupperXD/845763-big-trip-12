@@ -13,7 +13,10 @@ import {createTripEventItemTempalte} from "./view/event-item";
 import {createLoaderTemplate} from "./view/loader";
 import {createNoPointTemplate} from "./view/plug";
 import {createStatisticsTemplate} from "./view/statistics";
+import {createWayPoint} from "./mock/waypoint";
+import {WAY_POINT_COUNT} from "./constans";
 
+const wayPoints = new Array(WAY_POINT_COUNT).fill().map(createWayPoint);
 
 const bodyContainer = document.querySelector(`.page-body`);
 const headerContainer = bodyContainer.querySelector(`.page-header`);
@@ -53,10 +56,9 @@ renderTemplate(daysHolder, createTripDayHolder(), `beforeend`);
 const dayHolder = daysHolder.querySelector(`.trip-days__item`);
 const tripEventsList = dayHolder.querySelector(`.trip-events__list`);
 
-renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
-renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
-renderTemplate(tripEventsList, createTripEventItemTempalte(), `beforeend`);
-
+wayPoints.forEach((el) => {
+  renderTemplate(tripEventsList, createTripEventItemTempalte(el), `beforeend`);
+});
 
 renderTemplate(tripEventsContainer, createLoaderTemplate(), `beforeend`);
 renderTemplate(tripEventsContainer, createNoPointTemplate(), `beforeend`);
