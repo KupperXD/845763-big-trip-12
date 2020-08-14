@@ -1,24 +1,30 @@
 import {CITIES} from "../constans";
+import {getValidateDate} from "../utils";
 
+// рендерит разметку выбора города
 const renderDestinationTemplate = (type, city = null) => {
-
-  const ggenerateOptions = () => {
+  const generateOptions = () => {
     const destinations = [];
 
     for (const option of CITIES) {
-        destinations.push(`<option value="${option}" ${option === city ? `checked` : ``}></option>`);
+      destinations.push(`<option value="${option}" ${option === city ? `checked` : ``}></option>`);
     }
-  return destinations.join(``);
+    return destinations.join(``);
   };
 
   return `<div class="event__field-group  event__field-group--destination">
         <label class="event__label  event__type-output" for="event-destination-1">
-          Flight to
+          ${type} to
         </label>
         <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
         <datalist id="destination-list-1">
+        ${generateOptions()}
         </datalist>
       </div>`;
+};
+// Возвращает строку даты
+const getDateString = (date = new Date()) => {
+  return `${getValidateDate(date.getDate())}/${getValidateDate(date.getMonth())}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
 };
 
 export const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
@@ -29,10 +35,7 @@ export const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
       start: new Date(),
       finish: new Date()
     },
-    offers = null,
-    infoPoint = null,
     price = null,
-    amountPrice = null,
   } = wayPoint;
 
   return `<header class="event__header">
@@ -104,29 +107,18 @@ export const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
         </div>
       </div>
 
-      <div class="event__field-group  event__field-group--destination">
-        <label class="event__label  event__type-output" for="event-destination-1">
-          Flight to
-        </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
-        <datalist id="destination-list-1">
-          <option value="Amsterdam"></option>
-          <option value="Geneva"></option>
-          <option value="Chamonix"></option>
-          <option value="Saint Petersburg"></option>
-        </datalist>
-      </div>
+      ${renderDestinationTemplate(type, city)}
 
       <div class="event__field-group  event__field-group--time">
         <label class="visually-hidden" for="event-start-time-1">
           From
         </label>
-        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="18/03/19 00:00">
+        <input class="event__input  event__input--time" id="event-start-time-1" type="text" name="event-start-time" value="${getDateString(date.start)}">
         &mdash;
         <label class="visually-hidden" for="event-end-time-1">
           To
         </label>
-        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="18/03/19 00:00">
+        <input class="event__input  event__input--time" id="event-end-time-1" type="text" name="event-end-time" value="${getDateString(date.finish)}">
       </div>
 
       <div class="event__field-group  event__field-group--price">
@@ -134,7 +126,7 @@ export const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
           <span class="visually-hidden">Price</span>
           &euro;
         </label>
-        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="">
+        <input class="event__input  event__input--price" id="event-price-1" type="text" name="event-price" value="${price === null ? `` : price}">
       </div>
 
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>

@@ -60,7 +60,6 @@ wayPoints.forEach((el) => {
   renderTemplate(tripEventsList, createTripEventItemTempalte(el), `beforeend`);
 });
 
-
 renderTemplate(tripEventsContainer, createLoaderTemplate(), `beforeend`);
 renderTemplate(tripEventsContainer, createNoPointTemplate(), `beforeend`);
 renderTemplate(tripEventsContainer, createStatisticsTemplate(), `beforeend`);

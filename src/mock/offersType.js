@@ -1,19 +1,11 @@
 import {getRandomInteger} from "../utils";
-import {MAX_OFFERS} from "../constans";
+import {MAX_OFFERS, OFFERS} from "../constans";
 
 // Возвращает название доп опции
 const generateNameOffers = () => {
-  const offersName = [
-    `food`,
-    `massage`,
-    `escort`,
-    `baggage`,
-    `dance`
-  ];
+  const randomIndex = getRandomInteger(0, OFFERS.length - 1);
 
-  const randomIndex = getRandomInteger(0, offersName.length - 1);
-
-  return offersName[randomIndex];
+  return OFFERS[randomIndex];
 };
 
 // возвращает цену
