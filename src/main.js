@@ -2,19 +2,24 @@ import {createTripInfo} from "./view/trip-info.js";
 import {createTripControlsMenu} from "./view/menu-controls.js";
 import {createTripFiltres} from "./view/trip-filters";
 import {createSortEventsTemplate} from "./view/sort-event";
-import {createEventEditHolderTemplate} from "./view/event-edit";
-import {createEventHeaderFieldsTemplate} from "./view/fields-edit";
-import {createEventsDetailContainer} from "./view/events-detail";
 import {createOffersListDetailTemplates} from "./view/offers-list";
-import {createDetailDestinationTemplates} from "./view/detail-destination";
-import {createEventsDaysHolder} from "./view/days-list";
-import {createTripDayHolder} from "./view/day";
-import {createTripEventItemTempalte} from "./view/event-item";
-import {createLoaderTemplate} from "./view/loader";
-import {createNoPointTemplate} from "./view/plug";
-import {createStatisticsTemplate} from "./view/statistics";
+import EventEditView from "./view/event-edit";
+import DaysView from "./view/days-list";
+import DayView from "./view/day";
+import DestinationView from "./view/detail-destination";
+import LoaderView from "./view/loader";
+import PlugView from "./view/plug";
+import StatisticsView from "./view/statistics";
+import EventDetailView from "./view/events-detail";
+import FieldsView from "./view/fields-edit";
+import OffersListView from "./view/offers-list";
+import {renderElement} from "./utils";
+import EventView from "./view/event-item";
+import MenuControlsView from "./view/menu-controls.js";
+import SortEventView from "./view/sort-event";
 import {createWayPoint} from "./mock/waypoint";
-import {WAY_POINT_COUNT} from "./constans";
+import {generateOffers} from "./mock/offersType";
+import {WAY_POINT_COUNT, POSITION} from "./constans";
 
 const wayPoints = new Array(WAY_POINT_COUNT).fill().map(createWayPoint);
 
@@ -31,35 +36,38 @@ const renderTemplate = (container, template, place) => {
 };
 
 renderTemplate(tripMainContainer, createTripInfo(), `afterbegin`);
-renderTemplate(tripControlsContainer, createTripControlsMenu(), `afterbegin`);
+renderElement(tripControlsContainer, new MenuControlsView().getElement(), POSITION.AFTERBEGIN);
 renderTemplate(tripControlsContainer, createTripFiltres(), `beforeend`);
 
-renderTemplate(tripEventsContainer, createSortEventsTemplate(), `afterbegin`);
-renderTemplate(tripEventsContainer, createEventEditHolderTemplate(), `beforeend`);
+renderElement(tripEventsContainer, new SortEventView().getElement(), POSITION.AFTERBEGIN);
 
-const eventsEditHolder = tripEventsContainer.querySelector(`.event`);
+const eventEdit = new EventEditView();
+renderElement(tripEventsContainer, eventEdit.getElement(), POSITION.BEFOREEND);
 
-renderTemplate(eventsEditHolder, createEventHeaderFieldsTemplate(), `afterbegin`);
-renderTemplate(eventsEditHolder, createEventsDetailContainer(), `beforeend`);
+renderElement(eventEdit.getElement(), new FieldsView().getElement(), POSITION.AFTERBEGIN);
 
-const eventsEditDetail = eventsEditHolder.querySelector(`.event__details`);
+const eventDetail = new EventDetailView();
+renderElement(eventEdit.getElement(), eventDetail.getElement(), POSITION.BEFOREEND);
 
-renderTemplate(eventsEditDetail, createOffersListDetailTemplates(), `beforeend`);
-renderTemplate(eventsEditDetail, createDetailDestinationTemplates(), `beforeend`);
+const eventsEditDetail = eventEdit.getElement().querySelector(`.event__details`);
 
-renderTemplate(tripEventsContainer, createEventsDaysHolder(), `beforeend`);
+renderElement(eventsEditDetail, new OffersListView().getElement(), POSITION.BEFOREEND);
+renderElement(eventDetail.getElement(), new DestinationView(wayPoints[0]).getElement(), POSITION.BEFOREEND);
 
-const daysHolder = tripEventsContainer.querySelector(`.trip-days`);
 
-renderTemplate(daysHolder, createTripDayHolder(), `beforeend`);
+const days = new DaysView();
 
-const dayHolder = daysHolder.querySelector(`.trip-days__item`);
+renderElement(tripEventsContainer, days.getElement(), POSITION.BEFOREEND);
+
+renderElement(days.getElement(), new DayView().getElement(), POSITION.BEFOREEND);
+
+const dayHolder = days.getElement().querySelector(`.trip-days__item`);
 const tripEventsList = dayHolder.querySelector(`.trip-events__list`);
 
 wayPoints.forEach((el) => {
-  renderTemplate(tripEventsList, createTripEventItemTempalte(el), `beforeend`);
+  renderElement(tripEventsList, new EventView(el).getElement(), POSITION.BEFOREEND);
 });
 
-renderTemplate(tripEventsContainer, createLoaderTemplate(), `beforeend`);
-renderTemplate(tripEventsContainer, createNoPointTemplate(), `beforeend`);
-renderTemplate(tripEventsContainer, createStatisticsTemplate(), `beforeend`);
+renderElement(tripEventsContainer, new LoaderView().getElement(), POSITION.BEFOREEND);
+renderElement(tripEventsContainer, new PlugView().getElement(), POSITION.BEFOREEND);
+renderElement(tripEventsContainer, new StatisticsView().getElement(), POSITION.BEFOREEND);

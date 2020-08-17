@@ -1,5 +1,5 @@
 import {CITIES} from "../constans";
-import {getValidateDate} from "../utils";
+import {getValidateDate, createElement} from "../utils";
 
 // рендерит разметку выбора города
 const renderDestinationTemplate = (type, city = null) => {
@@ -27,16 +27,19 @@ const getDateString = (date = new Date()) => {
   return `${getValidateDate(date.getDate())}/${getValidateDate(date.getMonth())}/${date.getFullYear()} ${date.getHours()}:${date.getMinutes()}`;
 };
 
-export const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
-  const {
-    type = `Bus`,
-    city = ``,
-    date = {
-      start: new Date(),
-      finish: new Date()
-    },
-    price = null,
-  } = wayPoint;
+const BLANK_WAY_POINT = {
+  type: `Bus`,
+  city: ``,
+  date: {
+    start: new Date(),
+    finish: new Date()
+  },
+  price: null,
+};
+
+const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
+
+  const {type, city, date, price} = wayPoint;
 
   return `<header class="event__header">
       <div class="event__type-wrapper">
@@ -133,3 +136,27 @@ export const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
       <button class="event__reset-btn" type="reset">Cancel</button>
     </header>`;
 };
+
+export default class Fields {
+  constructor(wayPoint = BLANK_WAY_POINT) {
+    this._element = null;
+    this._wayPoint = wayPoint;
+  }
+
+  getTemplate() {
+    return createEventHeaderFieldsTemplate(this._wayPoint);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+
+}

@@ -23,7 +23,7 @@ const generatePrice = () => {
 };
 
 // возвращает null или массив объектов доп опции
-export const generateOffers = (type) => {
+export const generateOffers = (type = `Bus`) => {
   const offersList = [];
 
   for (let i = 0; i < getRandomInteger(0, MAX_OFFERS); i++) {

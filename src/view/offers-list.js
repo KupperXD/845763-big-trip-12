@@ -1,4 +1,4 @@
-import {generateOffers} from "../mock/offersType";
+import {createElement} from "../utils";
 
 const generateOffersTemplate = (offers) => {
 
@@ -15,18 +15,40 @@ const generateOffersTemplate = (offers) => {
   }).join(``);
 };
 
-export const createOffersListDetailTemplates = (wayPoint = {}) => {
-
-  const {
-    type = `Bus`,
-    offers = generateOffers(type),
-  } = wayPoint;
-
+const createOffersListDetailTemplates = (offers) => {
   return offers !== null ? `<section class="event__section event__section--offers">
       <h3 class="event__section-title  event__section-title--offers">Offers</h3>
 
       <div class="event__available-offers">
         ${generateOffersTemplate(offers)}
       </div>
-    </section>` : ``;
+    </section>` : ` `;
 };
+
+export default class OffersList {
+  constructor(wayPoint = null, offers = null) {
+    this._element = null;
+    this._point = wayPoint;
+    this._offerItems = offers;
+  }
+
+  getTemplate() {
+    if (!this._point) {
+      return createOffersListDetailTemplates(this._offerItems);
+    } else {
+      return createOffersListDetailTemplates(this._point.offers);
+    }
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
