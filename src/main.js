@@ -3,6 +3,7 @@ import {createTripControlsMenu} from "./view/menu-controls.js";
 import {createTripFiltres} from "./view/trip-filters";
 import {createSortEventsTemplate} from "./view/sort-event";
 import {createOffersListDetailTemplates} from "./view/offers-list";
+import TripInfoView from "./view/trip-info.js";
 import EventEditView from "./view/event-edit";
 import DaysView from "./view/days-list";
 import DayView from "./view/day";
@@ -18,7 +19,6 @@ import EventView from "./view/event-item";
 import MenuControlsView from "./view/menu-controls.js";
 import SortEventView from "./view/sort-event";
 import {createWayPoint} from "./mock/waypoint";
-import {generateOffers} from "./mock/offersType";
 import {WAY_POINT_COUNT, POSITION} from "./constans";
 
 const wayPoints = new Array(WAY_POINT_COUNT).fill().map(createWayPoint);
@@ -35,7 +35,7 @@ const renderTemplate = (container, template, place) => {
   container.insertAdjacentHTML(place, template);
 };
 
-renderTemplate(tripMainContainer, createTripInfo(), `afterbegin`);
+renderElement(tripMainContainer, new TripInfoView(wayPoints).getElement(), POSITION.AFTERBEGIN);
 renderElement(tripControlsContainer, new MenuControlsView().getElement(), POSITION.AFTERBEGIN);
 renderTemplate(tripControlsContainer, createTripFiltres(), `beforeend`);
 
