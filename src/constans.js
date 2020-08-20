@@ -16,3 +16,8 @@ export const OFFERS = [
   `baggage`,
   `dance`
 ];
+
+export const POSITION = {
+  AFTERBEGIN: `afterbegin`,
+  BEFOREEND: `beforeend`
+};

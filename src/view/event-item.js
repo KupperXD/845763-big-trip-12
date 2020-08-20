@@ -1,4 +1,4 @@
-import {getHours, getMinutes} from "../utils";
+import {getHours, getMinutes, createElement} from "../utils";
 
 const isLocation = (type) => {
   const locations = [`Check-in`, `Sightseeng`, `Restaurant`];
@@ -22,7 +22,7 @@ const generateOffersTemplate = (offers) => {
 };
 
 
-export const createTripEventItemTempalte = (wayPoint) => {
+const createTripEventItemTempalte = (wayPoint) => {
 
   const {type, price, date, offers, city} = wayPoint;
 
@@ -64,3 +64,26 @@ export const createTripEventItemTempalte = (wayPoint) => {
       </div>
     </li>`;
 };
+
+export default class Event {
+  constructor(event) {
+    this._element = null;
+    this._event = event;
+  }
+
+  getTemplate() {
+    return createTripEventItemTempalte(this._event);
+  }
+
+  getElement() {
+    if (!this._element) {
+      this._element = createElement(this.getTemplate());
+    }
+
+    return this._element;
+  }
+
+  removeElement() {
+    this._element = null;
+  }
+}
