@@ -10,7 +10,7 @@ export default class EventDetail {
   }
 
   getTemplate() {
-    return createEventsDetailContainer()
+    return createEventsDetailContainer();
   }
 
   getElement() {

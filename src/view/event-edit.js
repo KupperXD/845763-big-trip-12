@@ -11,7 +11,7 @@ export default class EventEdit {
     return createEventEditHolderTemplate();
   }
 
-  getElement () {
+  getElement() {
     if (!this._element) {
       this._element = createElement(this.getTemplate());
     }

@@ -1,8 +1,3 @@
-import {createTripInfo} from "./view/trip-info.js";
-import {createTripControlsMenu} from "./view/menu-controls.js";
-import {createTripFiltres} from "./view/trip-filters";
-import {createSortEventsTemplate} from "./view/sort-event";
-import {createOffersListDetailTemplates} from "./view/offers-list";
 import TripInfoView from "./view/trip-info.js";
 import EventEditView from "./view/event-edit";
 import DaysView from "./view/days-list";
@@ -18,8 +13,42 @@ import {renderElement} from "./utils";
 import EventView from "./view/event-item";
 import MenuControlsView from "./view/menu-controls.js";
 import SortEventView from "./view/sort-event";
+import FiltersView from "./view/trip-filters";
 import {createWayPoint} from "./mock/waypoint";
 import {WAY_POINT_COUNT, POSITION} from "./constans";
+
+const renderWayPoint = (wayPointConteiner, wayPoint) => {
+  const wayPointComponent = new EventView(wayPoint);
+  const eventEditComponent = new EventEditView();
+  const eventEditFieldsComponent = new FieldsView(wayPoint);
+  const eventDetailComponent = new EventDetailView();
+  const offersComponent = new OffersListView();
+  const destinationTemplate = new DestinationView(wayPoint);
+
+  renderElement(eventEditComponent.getElement(), eventEditFieldsComponent.getElement(), POSITION.BEFOREEND);
+  renderElement(eventEditComponent.getElement(), eventEditFieldsComponent.getElement(), POSITION.BEFOREEND);
+  renderElement(eventEditComponent.getElement(), eventDetailComponent.getElement(), POSITION.BEFOREEND);
+  renderElement(eventEditComponent.getElement().querySelector(`.event__details`), offersComponent.getElement(), POSITION.BEFOREEND);
+  renderElement(eventEditComponent.getElement().querySelector(`.event__details`), destinationTemplate.getElement(), POSITION.BEFOREEND);
+
+  const replacePointToForm = () => {
+    wayPointConteiner.replaceChild(eventEditComponent.getElement(), wayPointComponent.getElement());
+  };
+
+  const replaceFormToPoint = () => {
+    wayPointConteiner.replaceChild(wayPointComponent.getElement(), eventEditComponent.getElement());
+  };
+
+  wayPointComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
+    replacePointToForm();
+  });
+
+  eventEditComponent.getElement().querySelector(`.event__save-btn`).addEventListener(`click`, () => {
+    replaceFormToPoint();
+  });
+
+  renderElement(wayPointConteiner, wayPointComponent.getElement(), POSITION.BEFOREEND);
+};
 
 const wayPoints = new Array(WAY_POINT_COUNT).fill().map(createWayPoint);
 
@@ -30,14 +59,9 @@ const tripControlsContainer = tripMainContainer.querySelector(`.trip-controls`);
 const pageMainContainer = bodyContainer.querySelector(`.page-main`);
 const tripEventsContainer = pageMainContainer.querySelector(`.trip-events`);
 
-
-const renderTemplate = (container, template, place) => {
-  container.insertAdjacentHTML(place, template);
-};
-
 renderElement(tripMainContainer, new TripInfoView(wayPoints).getElement(), POSITION.AFTERBEGIN);
 renderElement(tripControlsContainer, new MenuControlsView().getElement(), POSITION.AFTERBEGIN);
-renderTemplate(tripControlsContainer, createTripFiltres(), `beforeend`);
+renderElement(tripControlsContainer, new FiltersView().getElement(), POSITION.BEFOREEND);
 
 renderElement(tripEventsContainer, new SortEventView().getElement(), POSITION.AFTERBEGIN);
 
@@ -49,11 +73,7 @@ renderElement(eventEdit.getElement(), new FieldsView().getElement(), POSITION.AF
 const eventDetail = new EventDetailView();
 renderElement(eventEdit.getElement(), eventDetail.getElement(), POSITION.BEFOREEND);
 
-const eventsEditDetail = eventEdit.getElement().querySelector(`.event__details`);
-
-renderElement(eventsEditDetail, new OffersListView().getElement(), POSITION.BEFOREEND);
-renderElement(eventDetail.getElement(), new DestinationView(wayPoints[0]).getElement(), POSITION.BEFOREEND);
-
+renderElement(eventDetail.getElement(), new OffersListView().getElement(), POSITION.BEFOREEND);
 
 const days = new DaysView();
 
@@ -65,7 +85,7 @@ const dayHolder = days.getElement().querySelector(`.trip-days__item`);
 const tripEventsList = dayHolder.querySelector(`.trip-events__list`);
 
 wayPoints.forEach((el) => {
-  renderElement(tripEventsList, new EventView(el).getElement(), POSITION.BEFOREEND);
+  renderWayPoint(tripEventsList, el);
 });
 
 renderElement(tripEventsContainer, new LoaderView().getElement(), POSITION.BEFOREEND);
