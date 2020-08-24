@@ -1,5 +1,5 @@
 import AbstractView from "./abstract";
-import {getHours, getMinutes} from "../utils";
+import {getHours, getMinutes} from "../utils/wayPoint";
 
 const isLocation = (type) => {
   const locations = [`Check-in`, `Sightseeng`, `Restaurant`];

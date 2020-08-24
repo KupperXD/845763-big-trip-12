@@ -1,4 +1,4 @@
-import {getRandomInteger} from "../utils";
+import {getRandomInteger} from "../utils/common";
 import {MAX_OFFERS, OFFERS} from "../constans";
 
 // Возвращает название доп опции

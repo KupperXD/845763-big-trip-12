@@ -9,7 +9,7 @@ import StatisticsView from "./view/statistics";
 import EventDetailView from "./view/events-detail";
 import FieldsView from "./view/fields-edit";
 import OffersListView from "./view/offers-list";
-import {renderElement} from "./utils";
+import {renderElement} from "./utils/render";
 import EventView from "./view/event-item";
 import MenuControlsView from "./view/menu-controls.js";
 import SortEventView from "./view/sort-event";
@@ -60,16 +60,6 @@ renderElement(tripControlsContainer, new MenuControlsView().getElement(), POSITI
 renderElement(tripControlsContainer, new FiltersView().getElement(), POSITION.BEFOREEND);
 
 renderElement(tripEventsContainer, new SortEventView().getElement(), POSITION.AFTERBEGIN);
-
-const eventEdit = new EventEditView();
-renderElement(tripEventsContainer, eventEdit.getElement(), POSITION.BEFOREEND);
-
-renderElement(eventEdit.getElement(), new FieldsView().getElement(), POSITION.AFTERBEGIN);
-
-const eventDetail = new EventDetailView();
-renderElement(eventEdit.getElement(), eventDetail.getElement(), POSITION.BEFOREEND);
-
-renderElement(eventDetail.getElement(), new OffersListView().getElement(), POSITION.BEFOREEND);
 
 const days = new DaysView();
 

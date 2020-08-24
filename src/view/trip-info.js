@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractView from "./abstract";
 
 const MonthMap = {
   1: `jan`,
@@ -62,25 +62,13 @@ const createTripInfo = (points) => {
               </section>`;
 };
 
-export default class TripInfo {
+export default class TripInfo extends AbstractView {
   constructor(wayPoints) {
-    this._element = null;
+    super();
     this._points = wayPoints;
   }
 
   getTemplate() {
     return createTripInfo(this._points);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

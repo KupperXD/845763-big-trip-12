@@ -1,6 +1,6 @@
 import AbstractView from "./abstract";
 import {CITIES} from "../constans";
-import {getValidateDate} from "../utils";
+import {getValidateDate} from "../utils/wayPoint";
 
 // рендерит разметку выбора города
 const renderDestinationTemplate = (type, city = null) => {
