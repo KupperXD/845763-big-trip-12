@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractView from "./abstract";
 
 const createPhoto = (photoSrc) => `<img class="event__photo" src="${photoSrc}" alt="Event photo">`;
 
@@ -15,9 +15,9 @@ const createDetailDestinationTemplates = (photo, desc) => {
   `;
 };
 
-export default class Destination {
+export default class Destination extends AbstractView {
   constructor(event) {
-    this._element = null;
+    super();
     this._photos = event.infoPoint.photo;
     this._description = event.infoPoint.description;
   }
@@ -25,17 +25,4 @@ export default class Destination {
   getTemplate() {
     return createDetailDestinationTemplates(this._photos, this._description);
   }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-
 }

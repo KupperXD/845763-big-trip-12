@@ -1,5 +1,6 @@
+import AbstractView from "./abstract";
 import {CITIES} from "../constans";
-import {getValidateDate, createElement} from "../utils";
+import {getValidateDate} from "../utils";
 
 // рендерит разметку выбора города
 const renderDestinationTemplate = (type, city = null) => {
@@ -137,26 +138,25 @@ const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
     </header>`;
 };
 
-export default class Fields {
+export default class Fields extends AbstractView {
   constructor(wayPoint = BLANK_WAY_POINT) {
-    this._element = null;
+    super();
     this._wayPoint = wayPoint;
+    this._clickToSaveHandler = this._clickToSaveHandler.bind(this);
+  }
+
+  _clickToSaveHandler(evt) {
+    evt.preventDefault();
+    this._callback.saveClick();
+  }
+
+  setClickToSaveHandler(callback) {
+    this._callback.saveClick = callback;
+
+    this.getElement().querySelector(`.event__save-btn`).addEventListener(`click`, this._clickToSaveHandler);
   }
 
   getTemplate() {
     return createEventHeaderFieldsTemplate(this._wayPoint);
   }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
-  }
-
 }

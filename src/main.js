@@ -39,13 +39,9 @@ const renderWayPoint = (wayPointConteiner, wayPoint) => {
     wayPointConteiner.replaceChild(wayPointComponent.getElement(), eventEditComponent.getElement());
   };
 
-  wayPointComponent.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, () => {
-    replacePointToForm();
-  });
+  wayPointComponent.setEditClickHandler(replacePointToForm);
 
-  eventEditComponent.getElement().querySelector(`.event__save-btn`).addEventListener(`click`, () => {
-    replaceFormToPoint();
-  });
+  eventEditFieldsComponent.setClickToSaveHandler(replaceFormToPoint);
 
   renderElement(wayPointConteiner, wayPointComponent.getElement(), POSITION.BEFOREEND);
 };

@@ -1,4 +1,4 @@
-import {createElement} from "../utils";
+import AbstractView from "./abstract";
 
 const generateOffersTemplate = (offers) => {
 
@@ -25,9 +25,10 @@ const createOffersListDetailTemplates = (offers) => {
     </section>` : ` `;
 };
 
-export default class OffersList {
+export default class OffersList extends AbstractView {
   constructor(wayPoint = null, offers = null) {
-    this._element = null;
+    super();
+
     this._point = wayPoint;
     this._offerItems = offers;
   }
@@ -38,17 +39,5 @@ export default class OffersList {
     } else {
       return createOffersListDetailTemplates(this._point.offers);
     }
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
