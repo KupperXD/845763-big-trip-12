@@ -1,7 +1,7 @@
 import Abstract from "../view/abstract";
 import {POSITION} from "../constans";
 
-export const renderElement = (container, element, place) => {
+export const render = (container, element, place) => {
   if (container instanceof Abstract) {
     container = container.getElement();
   }
