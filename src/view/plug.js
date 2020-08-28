@@ -1,25 +1,9 @@
-import {createElement} from "../utils";
+import AbstractView from "./abstract";
 
 const createNoPointTemplate = () => `<p class="trip-events__msg">Click New Event to create your first point</p>`;
 
-export default class Plug {
-  constructor() {
-    this._element = null;
-  }
-
+export default class Plug extends AbstractView {
   getTemplate() {
     return createNoPointTemplate();
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }

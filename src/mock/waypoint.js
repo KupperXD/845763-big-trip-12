@@ -1,5 +1,5 @@
 import {generateOffers} from "./offersType.js";
-import {getRandomInteger} from "../utils";
+import {getRandomInteger} from "../utils/common";
 import {MAX_MESSAGE_DESC, MIN_MESSAGE_DESC, YEAR, CITIES} from "../constans";
 
 // Генерирует дату начало и конца события

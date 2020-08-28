@@ -1,4 +1,5 @@
-import {getHours, getMinutes, createElement} from "../utils";
+import AbstractView from "./abstract";
+import {getHours, getMinutes} from "../utils/wayPoint";
 
 const isLocation = (type) => {
   const locations = [`Check-in`, `Sightseeng`, `Restaurant`];
@@ -65,25 +66,24 @@ const createTripEventItemTempalte = (wayPoint) => {
     </li>`;
 };
 
-export default class Event {
+export default class Event extends AbstractView {
   constructor(event) {
-    this._element = null;
+    super();
     this._event = event;
+    this._editClickHandler = this._editClickHandler.bind(this);
+  }
+
+  _editClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.editClick();
+  }
+
+  setEditClickHandler(callback) {
+    this._callback.editClick = callback;
+    this.getElement().querySelector(`.event__rollup-btn`).addEventListener(`click`, this._editClickHandler);
   }
 
   getTemplate() {
     return createTripEventItemTempalte(this._event);
-  }
-
-  getElement() {
-    if (!this._element) {
-      this._element = createElement(this.getTemplate());
-    }
-
-    return this._element;
-  }
-
-  removeElement() {
-    this._element = null;
   }
 }
