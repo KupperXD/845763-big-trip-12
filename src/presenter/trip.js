@@ -9,6 +9,7 @@ import PlugView from "../view/plug";
 import {POSITION} from "../constans";
 import {render, replace} from "../utils/render";
 import DestinationView from "../view/detail-destination";
+import EventPresenter from "../presenter/event";
 
 
 export default class Trip {
@@ -32,39 +33,13 @@ export default class Trip {
   }
 
   _renderWayPoint(wayPointConteiner, wayPoint) {
-    const wayPointComponent = new EventView(wayPoint);
-    const eventEditComponent = new EventEditView();
-    const eventEditFieldsComponent = new FieldsView(wayPoint);
-    const eventDetailComponent = new EventDetailView();
-    const offersComponent = new OffersListView();
-    const destinationTemplate = new DestinationView(wayPoint);
-
-    render(eventEditComponent, eventEditFieldsComponent, POSITION.BEFOREEND);
-    render(eventEditComponent, eventEditFieldsComponent, POSITION.BEFOREEND);
-    render(eventEditComponent, eventDetailComponent, POSITION.BEFOREEND);
-
-    const detailsHolder = eventEditComponent.getElement().querySelector(`.event__details`);
-
-    render(detailsHolder, offersComponent, POSITION.BEFOREEND);
-    render(detailsHolder, destinationTemplate, POSITION.BEFOREEND);
-
-    const replacePointToForm = () => {
-      replace(eventEditComponent, wayPointComponent);
-    };
-
-    const replaceFormToPoint = () => {
-      replace(wayPointComponent, eventEditComponent);
-    };
-
-    wayPointComponent.setEditClickHandler(replacePointToForm);
-
-    eventEditFieldsComponent.setClickToSaveHandler(replaceFormToPoint);
-
-    render(wayPointConteiner, wayPointComponent, POSITION.BEFOREEND);
+    const eventPresenter = new EventPresenter(wayPointConteiner);
+    
+    eventPresenter.init(wayPoint);
   }
 
   _renderWayPoints() {
-    const eventHolder = this._dayComponent.getElement().querySelector(`.trip-events__list`);
+    const eventHolder = this._dayComponent.getEventContainer();
 
     this._wayPoints.forEach((el) => {
       this._renderWayPoint(eventHolder, el);

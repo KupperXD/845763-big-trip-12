@@ -6,4 +6,8 @@ export default class EventEdit extends AbstractView {
   getTemplate() {
     return createEventEditHolderTemplate();
   }
+
+  getDetailHolder() {
+    return this.getElement().querySelector(`.event__details`);
+  }
 }
