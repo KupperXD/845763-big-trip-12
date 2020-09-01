@@ -4,7 +4,7 @@ import EventDetailView from "../view/events-detail";
 import FieldsView from "../view/fields-edit";
 import OffersListView from "../view/offers-list";
 import DestinationView from "../view/detail-destination";
-import {render, replace} from "../utils/render";
+import {render, replace, remove} from "../utils/render";
 import {POSITION} from "../constans";
 
 export default class Event {
@@ -20,9 +20,15 @@ export default class Event {
 
         this._handleEditClick = this._handleEditClick.bind(this);
         this._handleFormSubmit = this._handleFormSubmit.bind(this);
+        this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
     }
 
     init(wayPoint) {
+        this._wayPoint = wayPoint;
+
+        const prevWayPointComponent = this._wayPointComponent;
+        const prevEditComponent = this._editComponent;
+
         this._wayPointComponent = new EventView(wayPoint);
         this._editComponent = new EventEditView();
         this._editFieldsComponent = new FieldsView(wayPoint);
@@ -33,16 +39,31 @@ export default class Event {
         render(this._editComponent, this._editFieldsComponent, POSITION.BEFOREEND);
         render(this._editComponent, this._editFieldsComponent, POSITION.BEFOREEND);
         render(this._editComponent, this._detailComponent, POSITION.BEFOREEND);
-    
-    
+
+
         render(this._detailComponent, this._offersComponent, POSITION.BEFOREEND);
         render(this._detailComponent, this._destinationComponent, POSITION.BEFOREEND);
-    
+
         this._wayPointComponent.setEditClickHandler(this._handleEditClick);
-    
+
         this._editFieldsComponent.setClickToSaveHandler(this._handleFormSubmit);
-    
-        render(this._eventListContainer, this._wayPointComponent, POSITION.BEFOREEND);
+        this._editFieldsComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+
+        if (prevWayPointComponent === null || prevEditComponent === null) {
+          render(this._eventListContainer, this._wayPointComponent, POSITION.BEFOREEND);
+          return;
+        }
+
+        if (this._eventListContainer.getElement().contains(prevWayPointComponent.getElement())) {
+          replace(this._wayPointComponent, prevWayPointComponent);
+        }
+
+        if (this._eventListContainer.getElement().contains(prevEditComponent.getElement())) {
+          replace(this._editComponent, prevEditComponent);
+        }
+
+        remove(prevEditComponent);
+        remove(prevWayPointComponent);
     }
 
     _replacePointToForm() {
@@ -59,5 +80,8 @@ export default class Event {
 
     _handleFormSubmit() {
         this._replaceFormToPoint();
+    }
+
+    _handleFavoriteClick() {
     }
 }

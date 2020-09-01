@@ -85,6 +85,11 @@ const generetePrice = () => {
   return getRandomInteger(minPrice, maxPrice);
 };
 
+// Рандомное булевое
+const generateFavorite = () => {
+  return Boolean(getRandomInteger(0, 1));
+};
+
 // Создает точку маршрута в виде объекта
 export const createWayPoint = () => {
 
@@ -92,6 +97,7 @@ export const createWayPoint = () => {
   const date = generateInterval();
   const offers = generateOffers(type);
   const price = generetePrice();
+  const favorite = generateFavorite();
   let offersPrice = 0;
 
   // если доп опции не пустые считаем цену
@@ -106,6 +112,7 @@ export const createWayPoint = () => {
     city: generateCity(),
     date,
     offers,
+    favorite,
     infoPoint: {
       description: generateDesc(),
       photo: `http://picsum.photos/248/152?r=${Math.random()}`,

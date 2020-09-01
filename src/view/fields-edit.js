@@ -40,7 +40,7 @@ const BLANK_WAY_POINT = {
 
 const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
 
-  const {type, city, date, price} = wayPoint;
+  const {type, city, date, price, favorite} = wayPoint;
 
   return `<header class="event__header">
       <div class="event__type-wrapper">
@@ -136,7 +136,7 @@ const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">Cancel</button>
 
-      <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" checked>
+      <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favorite ? `checked` : ``}>
       <label class="event__favorite-btn" for="event-favorite-1">
         <span class="visually-hidden">Add to favorite</span>
         <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -155,11 +155,23 @@ export default class Fields extends AbstractView {
     super();
     this._wayPoint = wayPoint;
     this._clickToSaveHandler = this._clickToSaveHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   _clickToSaveHandler(evt) {
     evt.preventDefault();
     this._callback.saveClick();
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick;
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+
+    this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
   }
 
   setClickToSaveHandler(callback) {
