@@ -1,15 +1,11 @@
-import EventView from "../view/event-item";
-import EventEditView from "../view/event-edit";
-import EventDetailView from "../view/events-detail";
-import FieldsView from "../view/fields-edit";
-import OffersListView from "../view/offers-list";
+
 import DaysView from "../view/days-list";
 import DayView from "../view/day";
 import PlugView from "../view/plug";
 import {POSITION} from "../constans";
-import {render, replace} from "../utils/render";
-import DestinationView from "../view/detail-destination";
+import {render} from "../utils/render";
 import EventPresenter from "../presenter/event";
+import {updateItem} from "../utils/common";
 
 
 export default class Trip {
@@ -20,6 +16,9 @@ export default class Trip {
     this._dayComponent = new DayView();
     this._plugComponent = new PlugView();
 
+    this._eventPresenter = {};
+
+    this._handlePointChange = this._handlePointChange.bind(this);
   }
 
   init(points) {
@@ -33,16 +32,16 @@ export default class Trip {
   }
 
   _renderWayPoint(wayPointConteiner, wayPoint) {
-    const eventPresenter = new EventPresenter(wayPointConteiner);
-    
+    const eventPresenter = new EventPresenter(wayPointConteiner, this._handlePointChange);
+
     eventPresenter.init(wayPoint);
+    this._eventPresenter[wayPoint.id] = eventPresenter;
   }
 
   _renderWayPoints() {
-    const eventHolder = this._dayComponent.getEventContainer();
 
     this._wayPoints.forEach((el) => {
-      this._renderWayPoint(eventHolder, el);
+      this._renderWayPoint(this._dayComponent, el);
     });
   }
 
@@ -56,5 +55,10 @@ export default class Trip {
       return;
     }
     this._renderWayPoints();
+  }
+
+  _handlePointChange(updatePoint) {
+    this._wayPoints = updateItem(this._wayPoints, updatePoint);
+    this._eventPresenter[updatePoint.id].init(updatePoint);
   }
 }

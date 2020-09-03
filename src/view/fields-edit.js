@@ -17,7 +17,7 @@ const renderDestinationTemplate = (type, city = null) => {
         <label class="event__label  event__type-output" for="event-destination-1">
           ${type} to
         </label>
-        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="" list="destination-list-1">
+        <input class="event__input  event__input--destination" id="event-destination-1" type="text" name="event-destination" value="${(city !== null) ? city : ``}" list="destination-list-1">
         <datalist id="destination-list-1">
         ${generateOptions()}
         </datalist>
@@ -40,7 +40,7 @@ const BLANK_WAY_POINT = {
 
 const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
 
-  const {type, city, date, price, favorite} = wayPoint;
+  const {type, city, date, price, isFavorite} = wayPoint;
 
   return `<header class="event__header">
       <div class="event__type-wrapper">
@@ -136,7 +136,7 @@ const createEventHeaderFieldsTemplate = (wayPoint = {}) => {
       <button class="event__save-btn  btn  btn--blue" type="submit">Save</button>
       <button class="event__reset-btn" type="reset">Cancel</button>
 
-      <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${favorite ? `checked` : ``}>
+      <input id="event-favorite-1" class="event__favorite-checkbox  visually-hidden" type="checkbox" name="event-favorite" ${isFavorite ? `checked` : ``}>
       <label class="event__favorite-btn" for="event-favorite-1">
         <span class="visually-hidden">Add to favorite</span>
         <svg class="event__favorite-icon" width="28" height="28" viewBox="0 0 28 28">
@@ -160,12 +160,12 @@ export default class Fields extends AbstractView {
 
   _clickToSaveHandler(evt) {
     evt.preventDefault();
-    this._callback.saveClick();
+    this._callback.saveClick(this._wayPoint);
   }
 
   _favoriteClickHandler(evt) {
     evt.preventDefault();
-    this._callback.favoriteClick;
+    this._callback.favoriteClick();
   }
 
   setFavoriteClickHandler(callback) {

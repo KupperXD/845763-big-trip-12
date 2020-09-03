@@ -21,3 +21,16 @@ export const POSITION = {
   AFTERBEGIN: `afterbegin`,
   BEFOREEND: `beforeend`
 };
+
+export const TYPES = [
+  `Taxi`,
+  `Bus`,
+  `Train`,
+  `Ship`,
+  `Transport`,
+  `Drive`,
+  `Flight`,
+  `Check`,
+  `Sightseeing`,
+  `Restaurant`
+];

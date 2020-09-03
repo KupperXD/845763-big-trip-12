@@ -8,7 +8,7 @@ const generateOffersTemplate = (offers) => {
              <label class="event__offer-label" for="event-offer-comfort-1">
                <span class="event__offer-title">${offer.name}</span>
                &plus;
-               &euro;&nbsp;<span class="event__offer-price">${offer.price}</span>
+               &euro;&nbsp;<span class="event__offer-price">${ogitffer.price}</span>
              </label>
            </div>`;
 

@@ -1,5 +1,5 @@
 import {getRandomInteger} from "../utils/common";
-import {MAX_OFFERS, OFFERS} from "../constans";
+import {MAX_OFFERS, OFFERS, TYPES} from "../constans";
 
 // Возвращает название доп опции
 const generateNameOffers = () => {
