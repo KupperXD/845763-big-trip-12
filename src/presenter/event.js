@@ -4,8 +4,9 @@ import {render, replace, remove} from "../utils/render";
 import {POSITION} from "../constans";
 
 export default class Event {
-    constructor(eventListContainer, changeData) {
+    constructor(eventListContainer, changeData, offersList) {
         this._eventListContainer = eventListContainer;
+        this._offersList = offersList;
         this._changeData = changeData;
 
         this._wayPointComponent = null;
@@ -23,7 +24,7 @@ export default class Event {
         const prevEditComponent = this._editComponent;
 
         this._wayPointComponent = new EventView(wayPoint);
-        this._editComponent = new EventEditView(wayPoint);
+        this._editComponent = new EventEditView(wayPoint, this._offersList);
         this._editComponent.init();
 
         this._wayPointComponent.setEditClickHandler(this._handleEditClick);

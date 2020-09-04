@@ -81,20 +81,32 @@ const generateFavorite = () => {
   return Boolean(getRandomInteger(0, 1));
 };
 
-// Создает точку маршрута в виде объекта
-export const createWayPoint = () => {
+const getOffers = (offers) => {
+  if (offers !== null) {
+    const offersLength = offers.length;
 
+    return offers.slice(0, getRandomInteger(offersLength - 1));
+  }
+
+  return null;
+};
+
+// Создает точку маршрута в виде объекта
+export const createWayPoint = (offersList = null) => {
   const type = generateTypePoint();
   const date = generateInterval();
-  const offers = generateOffers(type);
   const price = generetePrice();
   const isFavorite = generateFavorite();
   const id = generateId();
+  let offers = null;
   let offersPrice = 0;
 
   // если доп опции не пустые считаем цену
-  if (offers !== null) {
-    offersPrice = offers.reduce((accumulator, element) => accumulator + element.price, 0);
+  if (offersList !== null) {
+    offers = getOffers(offersList[type]);
+    if (offers !== null) {
+      offersPrice = offers.reduce((accumulator, element) => accumulator + element.price, 0);
+    }
   }
 
   let amountPrice = price + offersPrice;

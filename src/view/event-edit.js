@@ -10,9 +10,10 @@ const createEventEditHolderTemplate = () => `<form class="trip-events__item even
 
 export default class EventEdit extends SmartView {
 
-  constructor(wayPoint) {
+  constructor(wayPoint, offersList) {
     super();
     this._wayPoint = wayPoint;
+    this._offersList = offersList;
     this._editFieldsComponent = null;
     this._detailComponent = null;
     this._offersComponent = null;
@@ -24,7 +25,7 @@ export default class EventEdit extends SmartView {
 
     this._editFieldsComponent = new FieldsView(this._wayPoint);
     this._detailComponent = new EventDetailView();
-    this._offersComponent = new OffersListView(this._wayPoint);
+    this._offersComponent = new OffersListView(this._wayPoint.offers, this._offersList[this._wayPoint.type]);
     this._destinationComponent = new DestinationView(this._wayPoint);
 
     render(this, this._editFieldsComponent, POSITION.BEFOREEND);

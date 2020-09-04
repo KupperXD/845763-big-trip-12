@@ -21,9 +21,10 @@ export default class Trip {
     this._handlePointChange = this._handlePointChange.bind(this);
   }
 
-  init(points) {
+  init(points, offersList) {
 
     this._wayPoints = points;
+    this._offersList = offersList;
 
     render(this._tripContainer, this._daysComponent, POSITION.BEFOREEND);
     render(this._daysComponent, this._dayComponent, POSITION.BEFOREEND);
@@ -32,7 +33,7 @@ export default class Trip {
   }
 
   _renderWayPoint(wayPointConteiner, wayPoint) {
-    const eventPresenter = new EventPresenter(wayPointConteiner, this._handlePointChange);
+    const eventPresenter = new EventPresenter(wayPointConteiner, this._handlePointChange, this._offersList);
 
     eventPresenter.init(wayPoint);
     this._eventPresenter[wayPoint.id] = eventPresenter;
