@@ -14,10 +14,13 @@ export default class EventEdit extends SmartView {
     super();
     this._wayPoint = wayPoint;
     this._offersList = offersList;
+
     this._editFieldsComponent = null;
     this._detailComponent = null;
     this._offersComponent = null;
     this._destinationComponent = null;
+
+    this._typeToggleHandler = this._typeToggleHandler.bind(this);
   }
 
   init() {
@@ -34,6 +37,10 @@ export default class EventEdit extends SmartView {
 
     render(this._detailComponent, this._offersComponent, POSITION.BEFOREEND);
     render(this._detailComponent, this._destinationComponent, POSITION.BEFOREEND);
+
+    this._editFieldsComponent.getElement()
+        .querySelector(`.event__type-list`)
+        .addEventListener(`change`, this._typeToggleHandler);
   }
 
   getFields() {
@@ -43,6 +50,16 @@ export default class EventEdit extends SmartView {
   getTemplate() {
     return createEventEditHolderTemplate();
   }
+
+  _typeToggleHandler(evt) {
+    evt.preventDefault();
+
+    const newType = evt.target.value;
+
+    this.updateData({
+      type: `${newType}`,
+    });
+  }  
 
   _setInnerHandlers() {
 
