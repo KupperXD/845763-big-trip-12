@@ -30,7 +30,7 @@ export const TYPES = [
   `transport`,
   `drive`,
   `flight`,
-  `check`,
+  `check-in`,
   `sightseeing`,
   `restaurant`
 ];
