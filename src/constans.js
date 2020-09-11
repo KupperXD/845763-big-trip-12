@@ -34,3 +34,8 @@ export const TYPES = [
   `sightseeing`,
   `restaurant`
 ];
+
+export const MODE = {
+  DEFAULT: `DEFAULT`,
+  EDITING: `EDITING`
+};

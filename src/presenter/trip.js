@@ -18,6 +18,7 @@ export default class Trip {
 
     this._eventPresenter = {};
 
+    this._handleModeChange = this._handleModeChange.bind(this);
     this._handlePointChange = this._handlePointChange.bind(this);
   }
 
@@ -33,7 +34,7 @@ export default class Trip {
   }
 
   _renderWayPoint(wayPointConteiner, wayPoint) {
-    const eventPresenter = new EventPresenter(wayPointConteiner, this._handlePointChange, this._offersList);
+    const eventPresenter = new EventPresenter(wayPointConteiner, this._handlePointChange, this._offersList, this._handleModeChange);
 
     eventPresenter.init(wayPoint);
     this._eventPresenter[wayPoint.id] = eventPresenter;
@@ -61,5 +62,11 @@ export default class Trip {
   _handlePointChange(updatePoint) {
     this._wayPoints = updateItem(this._wayPoints, updatePoint);
     this._eventPresenter[updatePoint.id].init(updatePoint);
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._eventPresenter)
+      .forEach((presenter) => presenter.resetView());
   }
 }

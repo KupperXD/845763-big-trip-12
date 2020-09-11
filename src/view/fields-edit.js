@@ -38,7 +38,7 @@ const renderTypes = (type) => {
 
     for (const item of items) {
       destinations.push(
-                  `<div class="event__type-item">
+          `<div class="event__type-item">
                     <input id="event-type-${item}-1"
                             class="event__type-input  visually-hidden"
                              type="radio"
@@ -136,30 +136,6 @@ export default class Fields extends AbstractView {
   constructor(wayPoint = BLANK_WAY_POINT) {
     super();
     this._wayPoint = wayPoint;
-    this._clickToSaveHandler = this._clickToSaveHandler.bind(this);
-    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
-  }
-
-  _clickToSaveHandler(evt) {
-    evt.preventDefault();
-    this._callback.saveClick(this._wayPoint);
-  }
-
-  _favoriteClickHandler(evt) {
-    evt.preventDefault();
-    this._callback.favoriteClick();
-  }
-
-  setFavoriteClickHandler(callback) {
-    this._callback.favoriteClick = callback;
-
-    this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
-  }
-
-  setClickToSaveHandler(callback) {
-    this._callback.saveClick = callback;
-
-    this.getElement().querySelector(`.event__save-btn`).addEventListener(`click`, this._clickToSaveHandler);
   }
 
   getTemplate() {

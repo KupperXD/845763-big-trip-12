@@ -14,11 +14,10 @@ export default class Smart extends Abstract {
     if (!update) {
       return;
     }
-
     this._wayPoint = Object.assign(
-      {},
-             this._wayPoint,
-              update
+        {},
+        this._wayPoint,
+        update
     );
 
     if (justDataUpdating) {
@@ -31,10 +30,6 @@ export default class Smart extends Abstract {
   updateElement() {
     let prevElement = this.getElement();
     const parent = prevElement.parentElement;
-    console.log({
-      element: prevElement,
-      parent
-    });
 
     this.removeElement();
 
@@ -44,12 +39,7 @@ export default class Smart extends Abstract {
     parent.replaceChild(newElement, prevElement);
 
     prevElement = null;
-
-    // this.restoreHandlers();
   }
 
-  // restoreHandlers() {
-  //   throw new Error(`Abstract method not implemented: resetHandlers`);
-  // }
 
 }

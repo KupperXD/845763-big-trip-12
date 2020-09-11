@@ -23,7 +23,7 @@ const generatePrice = () => {
 };
 
 const generateOfferItems = () => {
-    const offersList = [];
+  const offersList = [];
 
   for (let i = 0; i < getRandomInteger(0, MAX_OFFERS); i++) {
 

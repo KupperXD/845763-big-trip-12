@@ -1,4 +1,3 @@
-import {generateOffers} from "./offersType.js";
 import {getRandomInteger} from "../utils/common";
 import {MAX_MESSAGE_DESC, MIN_MESSAGE_DESC, YEAR, CITIES, TYPES} from "../constans";
 
@@ -21,7 +20,7 @@ const generateInterval = () => {
 };
 
 // Возвращает строку с рандомным количеством предложений
-const generateDesc = () => {
+export const generateDesc = () => {
   const maxMessage = getRandomInteger(MIN_MESSAGE_DESC, MAX_MESSAGE_DESC);
   const spliceMessage = 1;
   const larumText = [

@@ -5,6 +5,7 @@ import FieldsView from "../view/fields-edit";
 import OffersListView from "../view/offers-list";
 import DestinationView from "../view/detail-destination";
 import EventDetailView from "./events-detail";
+import {generateDesc} from "../mock/waypoint";
 
 const createEventEditHolderTemplate = () => `<form class="trip-events__item event  event--edit" action="#" method="post"></form>`;
 
@@ -21,6 +22,9 @@ export default class EventEdit extends SmartView {
     this._destinationComponent = null;
 
     this._typeToggleHandler = this._typeToggleHandler.bind(this);
+    this._destinationToggleHandler = this._destinationToggleHandler.bind(this);
+    this._clickToSaveHandler = this._clickToSaveHandler.bind(this);
+    this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
 
   init() {
@@ -38,14 +42,9 @@ export default class EventEdit extends SmartView {
     render(this._detailComponent, this._offersComponent, POSITION.BEFOREEND);
     render(this._detailComponent, this._destinationComponent, POSITION.BEFOREEND);
 
-    this._editFieldsComponent.getElement()
-        .querySelector(`.event__type-list`)
-        .addEventListener(`change`, this._typeToggleHandler);
+    this._setInnerHandlers();
   }
 
-  getFields() {
-    return this._editFieldsComponent;
-  }
 
   getTemplate() {
     return createEventEditHolderTemplate();
@@ -58,10 +57,56 @@ export default class EventEdit extends SmartView {
 
     this.updateData({
       type: `${newType}`,
+      offers: [],
     });
-  }  
+  }
+
+  _destinationToggleHandler(evt) {
+    evt.preventDefault();
+
+    const newDestination = evt.target.value;
+
+    this.updateData({
+      city: newDestination,
+      infoPoint: {
+        description: generateDesc(),
+        photo: `http://picsum.photos/248/152?r=${Math.random()}`,
+      },
+    });
+  }
+
+  _clickToSaveHandler(evt) {
+    evt.preventDefault();
+    this._callback.saveClick(this._wayPoint);
+  }
+
+  _favoriteClickHandler(evt) {
+    evt.preventDefault();
+    this._callback.favoriteClick();
+  }
+
+  setFavoriteClickHandler(callback) {
+    this._callback.favoriteClick = callback;
+
+    this.getElement().querySelector(`.event__favorite-btn`).addEventListener(`click`, this._favoriteClickHandler);
+  }
+
+  setClickToSaveHandler(callback) {
+    this._callback.saveClick = callback;
+
+    this.getElement().querySelector(`.event__save-btn`).addEventListener(`click`, this._clickToSaveHandler);
+  }
 
   _setInnerHandlers() {
+    this._editFieldsComponent.getElement()
+      .querySelector(`.event__type-list`)
+      .addEventListener(`change`, this._typeToggleHandler);
 
+    this._editFieldsComponent.getElement()
+      .querySelector(`#event-destination-1`)
+      .addEventListener(`change`, this._destinationToggleHandler);
+
+    this.setClickToSaveHandler(this._callback.saveClick);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
   }
 }
