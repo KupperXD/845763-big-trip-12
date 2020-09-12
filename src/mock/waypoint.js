@@ -1,6 +1,5 @@
-import {generateOffers} from "./offersType.js";
 import {getRandomInteger} from "../utils/common";
-import {MAX_MESSAGE_DESC, MIN_MESSAGE_DESC, YEAR, CITIES} from "../constans";
+import {MAX_MESSAGE_DESC, MIN_MESSAGE_DESC, YEAR, CITIES, TYPES} from "../constans";
 
 // Генерирует дату начало и конца события
 const generateInterval = () => {
@@ -21,7 +20,7 @@ const generateInterval = () => {
 };
 
 // Возвращает строку с рандомным количеством предложений
-const generateDesc = () => {
+export const generateDesc = () => {
   const maxMessage = getRandomInteger(MIN_MESSAGE_DESC, MAX_MESSAGE_DESC);
   const spliceMessage = 1;
   const larumText = [
@@ -52,21 +51,10 @@ const generateDesc = () => {
 // Возвращает рандомный тип точки маршрута
 
 const generateTypePoint = () => {
-  const types = [
-    `Taxi`,
-    `Bus`,
-    `Train`,
-    `Ship`,
-    `Transport`,
-    `Drive`,
-    `Flight`,
-    `Check`,
-    `Sightseeing`,
-    `Restaurant`
-  ];
-  const randomIndex = getRandomInteger(0, types.length - 1);
 
-  return types[randomIndex];
+  const randomIndex = getRandomInteger(0, TYPES.length - 1);
+
+  return TYPES[randomIndex];
 };
 
 // возвращает рандомный город
@@ -77,6 +65,8 @@ const generateCity = () => {
   return CITIES[randomIndex];
 };
 
+const generateId = () => Date.now() + parseInt(Math.random() * 10000, 10);
+
 // возвращает цену
 const generetePrice = () => {
   const minPrice = 10;
@@ -85,18 +75,37 @@ const generetePrice = () => {
   return getRandomInteger(minPrice, maxPrice);
 };
 
-// Создает точку маршрута в виде объекта
-export const createWayPoint = () => {
+// Рандомное булевое
+const generateFavorite = () => {
+  return Boolean(getRandomInteger(0, 1));
+};
 
+const getOffers = (offers) => {
+  if (offers !== null) {
+    const offersLength = offers.length;
+
+    return offers.slice(0, getRandomInteger(offersLength - 1));
+  }
+
+  return null;
+};
+
+// Создает точку маршрута в виде объекта
+export const createWayPoint = (offersList = null) => {
   const type = generateTypePoint();
   const date = generateInterval();
-  const offers = generateOffers(type);
   const price = generetePrice();
+  const isFavorite = generateFavorite();
+  const id = generateId();
+  let offers = null;
   let offersPrice = 0;
 
   // если доп опции не пустые считаем цену
-  if (offers !== null) {
-    offersPrice = offers.reduce((accumulator, element) => accumulator + element.price, 0);
+  if (offersList !== null) {
+    offers = getOffers(offersList[type]);
+    if (offers !== null) {
+      offersPrice = offers.reduce((accumulator, element) => accumulator + element.price, 0);
+    }
   }
 
   let amountPrice = price + offersPrice;
@@ -106,6 +115,8 @@ export const createWayPoint = () => {
     city: generateCity(),
     date,
     offers,
+    isFavorite,
+    id,
     infoPoint: {
       description: generateDesc(),
       photo: `http://picsum.photos/248/152?r=${Math.random()}`,

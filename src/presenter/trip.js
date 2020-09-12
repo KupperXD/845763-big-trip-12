@@ -1,14 +1,11 @@
-import EventView from "../view/event-item";
-import EventEditView from "../view/event-edit";
-import EventDetailView from "../view/events-detail";
-import FieldsView from "../view/fields-edit";
-import OffersListView from "../view/offers-list";
+
 import DaysView from "../view/days-list";
 import DayView from "../view/day";
 import PlugView from "../view/plug";
 import {POSITION} from "../constans";
-import {render, replace} from "../utils/render";
-import DestinationView from "../view/detail-destination";
+import {render} from "../utils/render";
+import EventPresenter from "../presenter/event";
+import {updateItem} from "../utils/common";
 
 
 export default class Trip {
@@ -19,11 +16,16 @@ export default class Trip {
     this._dayComponent = new DayView();
     this._plugComponent = new PlugView();
 
+    this._eventPresenter = {};
+
+    this._handleModeChange = this._handleModeChange.bind(this);
+    this._handlePointChange = this._handlePointChange.bind(this);
   }
 
-  init(points) {
+  init(points, offersList) {
 
     this._wayPoints = points;
+    this._offersList = offersList;
 
     render(this._tripContainer, this._daysComponent, POSITION.BEFOREEND);
     render(this._daysComponent, this._dayComponent, POSITION.BEFOREEND);
@@ -32,42 +34,16 @@ export default class Trip {
   }
 
   _renderWayPoint(wayPointConteiner, wayPoint) {
-    const wayPointComponent = new EventView(wayPoint);
-    const eventEditComponent = new EventEditView();
-    const eventEditFieldsComponent = new FieldsView(wayPoint);
-    const eventDetailComponent = new EventDetailView();
-    const offersComponent = new OffersListView();
-    const destinationTemplate = new DestinationView(wayPoint);
+    const eventPresenter = new EventPresenter(wayPointConteiner, this._handlePointChange, this._offersList, this._handleModeChange);
 
-    render(eventEditComponent, eventEditFieldsComponent, POSITION.BEFOREEND);
-    render(eventEditComponent, eventEditFieldsComponent, POSITION.BEFOREEND);
-    render(eventEditComponent, eventDetailComponent, POSITION.BEFOREEND);
-
-    const detailsHolder = eventEditComponent.getElement().querySelector(`.event__details`);
-
-    render(detailsHolder, offersComponent, POSITION.BEFOREEND);
-    render(detailsHolder, destinationTemplate, POSITION.BEFOREEND);
-
-    const replacePointToForm = () => {
-      replace(eventEditComponent, wayPointComponent);
-    };
-
-    const replaceFormToPoint = () => {
-      replace(wayPointComponent, eventEditComponent);
-    };
-
-    wayPointComponent.setEditClickHandler(replacePointToForm);
-
-    eventEditFieldsComponent.setClickToSaveHandler(replaceFormToPoint);
-
-    render(wayPointConteiner, wayPointComponent, POSITION.BEFOREEND);
+    eventPresenter.init(wayPoint);
+    this._eventPresenter[wayPoint.id] = eventPresenter;
   }
 
   _renderWayPoints() {
-    const eventHolder = this._dayComponent.getElement().querySelector(`.trip-events__list`);
 
     this._wayPoints.forEach((el) => {
-      this._renderWayPoint(eventHolder, el);
+      this._renderWayPoint(this._dayComponent, el);
     });
   }
 
@@ -81,5 +57,16 @@ export default class Trip {
       return;
     }
     this._renderWayPoints();
+  }
+
+  _handlePointChange(updatePoint) {
+    this._wayPoints = updateItem(this._wayPoints, updatePoint);
+    this._eventPresenter[updatePoint.id].init(updatePoint);
+  }
+
+  _handleModeChange() {
+    Object
+      .values(this._eventPresenter)
+      .forEach((presenter) => presenter.resetView());
   }
 }

@@ -19,4 +19,8 @@ export default class Day extends AbstractView {
   getTemplate() {
     return createTripDayHolder(this._date, this._count);
   }
+
+  getEventContainer() {
+    return this._element.querySelector(`.trip-events__list`);
+  }
 }

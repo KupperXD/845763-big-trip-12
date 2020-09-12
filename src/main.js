@@ -4,10 +4,14 @@ import MenuControlsView from "./view/menu-controls.js";
 import SortEventView from "./view/sort-event";
 import FiltersView from "./view/trip-filters";
 import TripPresenter from "./presenter/trip";
+import {generateOffers} from "./mock/offersType";
 import {createWayPoint} from "./mock/waypoint";
 import {WAY_POINT_COUNT, POSITION} from "./constans";
 
-const wayPoints = new Array(WAY_POINT_COUNT).fill().map(createWayPoint);
+const offersList = generateOffers();
+const wayPoints = new Array(WAY_POINT_COUNT).fill().map(() => {
+  return createWayPoint(offersList);
+});
 
 const bodyContainer = document.querySelector(`.page-body`);
 const headerContainer = bodyContainer.querySelector(`.page-header`);
@@ -24,6 +28,6 @@ render(tripEventsContainer, new SortEventView().getElement(), POSITION.AFTERBEGI
 
 const tripPresenter = new TripPresenter(tripEventsContainer);
 
-tripPresenter.init(wayPoints);
+tripPresenter.init(wayPoints, offersList);
 
 
