@@ -1,7 +1,7 @@
 import EventView from "../view/event-item";
 import EventEditView from "../view/event-edit";
 import {render, replace, remove} from "../utils/render";
-import {POSITION, MODE} from "../constans";
+import {POSITION, MODE, UserAction, UpdateType} from "../constans";
 
 export default class Event {
   constructor(eventListContainer, changeData, offersList, changeMode) {
@@ -50,6 +50,11 @@ export default class Event {
     remove(prevWayPointComponent);
   }
 
+  destroy() {
+    remove(this._wayPointComponent);
+    remove(this._editComponent);
+  }
+
   _replacePointToForm() {
     replace(this._editComponent, this._wayPointComponent);
     this._changeMode();
@@ -66,12 +71,18 @@ export default class Event {
   }
 
   _handleFormSubmit(wayPoint) {
-    this._changeData(wayPoint);
+    this._changeData(
+        UserAction.UPDATE_POINT,
+        UpdateType.PATCH,
+        wayPoint
+    );
     this._replaceFormToPoint();
   }
 
   _handleFavoriteClick() {
     this._changeData(
+        UserAction.UPDATE_POINT,
+        UpdateType.PATCH,
         Object.assign(
             {},
             this._wayPoint,

@@ -1,48 +1,67 @@
-
 import DaysView from "../view/days-list";
 import DayView from "../view/day";
 import PlugView from "../view/plug";
-import {POSITION} from "../constans";
-import {render} from "../utils/render";
 import EventPresenter from "../presenter/event";
-import {updateItem} from "../utils/common";
+import {render, remove} from "../utils/render";
+import {filter} from "../utils/filter";
+import {POSITION, UserAction, UpdateType} from "../constans";
 
 
 export default class Trip {
-  constructor(tripContainer) {
+  constructor(tripContainer, pointsModel, filtersModel) {
+    this._pointsModel = pointsModel;
+    this._filtersModel = filtersModel;
     this._tripContainer = tripContainer;
 
     this._daysComponent = new DaysView();
     this._dayComponent = new DayView();
     this._plugComponent = new PlugView();
-
+    this._offersList = null;
     this._eventPresenter = {};
 
+
+    this._handleViewAction = this._handleViewAction.bind(this);
+    this._handleModelEvent = this._handleModelEvent.bind(this);
     this._handleModeChange = this._handleModeChange.bind(this);
-    this._handlePointChange = this._handlePointChange.bind(this);
+
+    this._filtersModel.addObserver(this._handleModelEvent);
+    this._pointsModel.addObserver(this._handleModelEvent);
   }
 
-  init(points, offersList) {
+  init(offersList) {
 
-    this._wayPoints = points;
+    if (this._offersList !== null) {
+      this._renderTrip();
+      return;
+    }
+
     this._offersList = offersList;
-
-    render(this._tripContainer, this._daysComponent, POSITION.BEFOREEND);
-    render(this._daysComponent, this._dayComponent, POSITION.BEFOREEND);
-
     this._renderTrip();
   }
 
+  _getPoints() {
+    const filterType = this._filtersModel.getFilter();
+    const points = this._pointsModel.getPoints();
+    const filtredPoints = filter[filterType](points);
+
+    return filtredPoints;
+  }
+
+  _renderDays() {
+    render(this._tripContainer, this._daysComponent, POSITION.BEFOREEND);
+    render(this._daysComponent, this._dayComponent, POSITION.BEFOREEND);
+  }
+
   _renderWayPoint(wayPointConteiner, wayPoint) {
-    const eventPresenter = new EventPresenter(wayPointConteiner, this._handlePointChange, this._offersList, this._handleModeChange);
+    const eventPresenter = new EventPresenter(wayPointConteiner, this._handleViewAction, this._offersList, this._handleModeChange);
 
     eventPresenter.init(wayPoint);
     this._eventPresenter[wayPoint.id] = eventPresenter;
   }
 
-  _renderWayPoints() {
+  _renderWayPoints(points) {
 
-    this._wayPoints.forEach((el) => {
+    points.forEach((el) => {
       this._renderWayPoint(this._dayComponent, el);
     });
   }
@@ -52,16 +71,55 @@ export default class Trip {
   }
 
   _renderTrip() {
-    if (typeof this._wayPoints === `undefined` || this._wayPoints === null) {
+    const points = this._getPoints();
+
+    if (typeof points === `undefined` || points === null) {
       this._renderPlug();
       return;
     }
-    this._renderWayPoints();
+    this._renderDays();
+    this._renderWayPoints(points);
   }
 
-  _handlePointChange(updatePoint) {
-    this._wayPoints = updateItem(this._wayPoints, updatePoint);
-    this._eventPresenter[updatePoint.id].init(updatePoint);
+  _clearTrip() {
+    Object
+      .values(this._eventPresenter)
+      .forEach((presenter) => presenter.destroy());
+    this._eventPresenter = {};
+
+    remove(this._daysComponent);
+    remove(this._dayComponent);
+    remove(this._plugComponent);
+  }
+
+  _handleViewAction(actionType, updateType, update) {
+    switch (actionType) {
+      case UserAction.UPDATE_POINT:
+        this._pointsModel.updatePoint(updateType, update);
+        break;
+      case UserAction.ADD_POINT:
+        this._pointsModel.addPoint(updateType, update);
+        break;
+      case UserAction.REMOVE_POINT:
+        this._pointsModel.deletePoint(updateType, update);
+        break;
+    }
+  }
+
+  _handleModelEvent(updateType, data) {
+    switch (updateType) {
+      case UpdateType.PATCH:
+        this._eventPresenter[data.id].init(data);
+        break;
+      case UpdateType.MINOR:
+        this._clearTrip();
+        this._renderTrip();
+        break;
+      case UpdateType.MAJOR:
+        this._clearTrip();
+        this._renderTrip();
+        break;
+    }
   }
 
   _handleModeChange() {
