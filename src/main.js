@@ -33,9 +33,9 @@ render(tripControlsContainer, new MenuControlsView().getElement(), POSITION.AFTE
 render(tripEventsContainer, new SortEventView().getElement(), POSITION.AFTERBEGIN);
 
 const filterPresenter = new FiltersPresenter(tripControlsContainer, filterModel, pointsModel);
-const tripPresenter = new TripPresenter(tripEventsContainer, pointsModel, filterModel);
+const tripPresenter = new TripPresenter(tripEventsContainer, pointsModel, filterModel, offersList);
 
 filterPresenter.init();
-tripPresenter.init(offersList);
+tripPresenter.init();
 
 

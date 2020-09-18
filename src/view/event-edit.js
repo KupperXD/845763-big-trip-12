@@ -23,6 +23,7 @@ export default class EventEdit extends SmartView {
 
     this._typeToggleHandler = this._typeToggleHandler.bind(this);
     this._destinationToggleHandler = this._destinationToggleHandler.bind(this);
+    this._clickDeleteHandler = this._clickDeleteHandler.bind(this);
     this._clickToSaveHandler = this._clickToSaveHandler.bind(this);
     this._favoriteClickHandler = this._favoriteClickHandler.bind(this);
   }
@@ -42,7 +43,7 @@ export default class EventEdit extends SmartView {
     render(this._detailComponent, this._offersComponent, POSITION.BEFOREEND);
     render(this._detailComponent, this._destinationComponent, POSITION.BEFOREEND);
 
-    this._setInnerHandlers();
+    this._resetHandlers();
   }
 
 
@@ -80,9 +81,19 @@ export default class EventEdit extends SmartView {
     this._callback.saveClick(this._wayPoint);
   }
 
+  _clickDeleteHandler(evt) {
+    evt.preventDefault();
+    this._callback.deleteClick(this._wayPoint);
+  }
+
   _favoriteClickHandler(evt) {
     evt.preventDefault();
     this._callback.favoriteClick();
+  }
+
+  setClickDeleteHandler(callback) {
+    this._callback.deleteClick = callback;
+    this.getElement().querySelector(`.event__reset-btn`).addEventListener(`click`, this._clickDeleteHandler);
   }
 
   setFavoriteClickHandler(callback) {
@@ -97,6 +108,12 @@ export default class EventEdit extends SmartView {
     this.getElement().querySelector(`.event__save-btn`).addEventListener(`click`, this._clickToSaveHandler);
   }
 
+  _resetHandlers() {
+    this._setInnerHandlers();
+    this.setClickToSaveHandler(this._callback.saveClick);
+    this.setFavoriteClickHandler(this._callback.favoriteClick);
+  }
+
   _setInnerHandlers() {
     this._editFieldsComponent.getElement()
       .querySelector(`.event__type-list`)
@@ -105,8 +122,5 @@ export default class EventEdit extends SmartView {
     this._editFieldsComponent.getElement()
       .querySelector(`#event-destination-1`)
       .addEventListener(`change`, this._destinationToggleHandler);
-
-    this.setClickToSaveHandler(this._callback.saveClick);
-    this.setFavoriteClickHandler(this._callback.favoriteClick);
   }
 }

@@ -17,6 +17,7 @@ export default class Event {
     this._handleEditClick = this._handleEditClick.bind(this);
     this._handleFormSubmit = this._handleFormSubmit.bind(this);
     this._handleFavoriteClick = this._handleFavoriteClick.bind(this);
+    this._handleDeleteClick = this._handleDeleteClick.bind(this);
   }
 
   init(wayPoint) {
@@ -32,6 +33,7 @@ export default class Event {
     this._wayPointComponent.setEditClickHandler(this._handleEditClick);
     this._editComponent.setClickToSaveHandler(this._handleFormSubmit);
     this._editComponent.setFavoriteClickHandler(this._handleFavoriteClick);
+    this._editComponent.setClickDeleteHandler(this._handleDeleteClick);
 
     if (prevWayPointComponent === null || prevEditComponent === null) {
       render(this._eventListContainer.getEventContainer(), this._wayPointComponent, POSITION.BEFOREEND);
@@ -53,6 +55,12 @@ export default class Event {
   destroy() {
     remove(this._wayPointComponent);
     remove(this._editComponent);
+  }
+
+  resetView() {
+    if (this._mode === MODE.EDITING) {
+      this._replaceFormToPoint();
+    }
   }
 
   _replacePointToForm() {
@@ -79,6 +87,14 @@ export default class Event {
     this._replaceFormToPoint();
   }
 
+  _handleDeleteClick(wayPoint) {
+    this._changeData(
+      UserAction.REMOVE_POINT,
+      UpdateType.MAJOR,
+      wayPoint,
+    );
+  }
+
   _handleFavoriteClick() {
     this._changeData(
         UserAction.UPDATE_POINT,
@@ -91,11 +107,5 @@ export default class Event {
             }
         )
     );
-  }
-
-  resetView() {
-    if (this._mode === MODE.EDITING) {
-      this._replaceFormToPoint();
-    }
   }
 }

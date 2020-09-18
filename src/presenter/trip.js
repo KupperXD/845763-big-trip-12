@@ -8,15 +8,15 @@ import {POSITION, UserAction, UpdateType} from "../constans";
 
 
 export default class Trip {
-  constructor(tripContainer, pointsModel, filtersModel) {
+  constructor(tripContainer, pointsModel, filtersModel, offersModel) {
     this._pointsModel = pointsModel;
     this._filtersModel = filtersModel;
+    this._offersModel = offersModel;
     this._tripContainer = tripContainer;
 
     this._daysComponent = new DaysView();
     this._dayComponent = new DayView();
     this._plugComponent = new PlugView();
-    this._offersList = null;
     this._eventPresenter = {};
 
 
@@ -28,14 +28,10 @@ export default class Trip {
     this._pointsModel.addObserver(this._handleModelEvent);
   }
 
-  init(offersList) {
+  init() {
+    render(this._tripContainer, this._daysComponent, POSITION.BEFOREEND);
+    render(this._daysComponent, this._dayComponent, POSITION.BEFOREEND);
 
-    if (this._offersList !== null) {
-      this._renderTrip();
-      return;
-    }
-
-    this._offersList = offersList;
     this._renderTrip();
   }
 
@@ -47,13 +43,8 @@ export default class Trip {
     return filtredPoints;
   }
 
-  _renderDays() {
-    render(this._tripContainer, this._daysComponent, POSITION.BEFOREEND);
-    render(this._daysComponent, this._dayComponent, POSITION.BEFOREEND);
-  }
-
   _renderWayPoint(wayPointConteiner, wayPoint) {
-    const eventPresenter = new EventPresenter(wayPointConteiner, this._handleViewAction, this._offersList, this._handleModeChange);
+    const eventPresenter = new EventPresenter(wayPointConteiner, this._handleViewAction, this._offersModel, this._handleModeChange);
 
     eventPresenter.init(wayPoint);
     this._eventPresenter[wayPoint.id] = eventPresenter;
@@ -77,7 +68,6 @@ export default class Trip {
       this._renderPlug();
       return;
     }
-    this._renderDays();
     this._renderWayPoints(points);
   }
 
